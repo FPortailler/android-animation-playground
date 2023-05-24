@@ -77,6 +77,7 @@ fun ImageView.loadAndSetImageFromUrl(
 			Log.w("Load image", "Failed to load image with url: $url", e)
 			setScaleType(ImageView.ScaleType.CENTER_CROP)
 			setBackgroundColor(ContextCompat.getColor(context, R.color.mockUpBackground))
+			onImageReady?.invoke()
 		}
 	})
 }

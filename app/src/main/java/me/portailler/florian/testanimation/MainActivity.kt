@@ -1,7 +1,7 @@
 package me.portailler.florian.testanimation
 
 import android.os.Bundle
-import android.transition.TransitionInflater
+import android.util.Log
 import android.view.Window
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,11 +18,24 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = MainActivityBinding.inflate(layoutInflater)
-		supportRequestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 		setContentView(binding.root)
+
 		supportFragmentManager.beginTransaction()
-			.add(binding.mainFragmentContainer.id, HomeFragment(), HomeFragment::class.java.simpleName)
+			.setReorderingAllowed(true)
+			.add(R.id.mainFragmentContainer, HomeFragment(), HomeFragment::class.java.simpleName)
+			.addToBackStack(HomeFragment::class.java.simpleName)
 			.commit()
+	}
+
+	override fun onBackPressed() {
+		Log.d("BACK", "${supportFragmentManager.backStackEntryCount} fragments in backstack")
+		supportFragmentManager.popBackStack()
+//		supportFragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName)?.let { fragment ->
+//			supportFragmentManager.beginTransaction()
+//				.replace(R.id.mainFragmentContainer, fragment)
+//				.commit()
+//		}
+		super.onBackPressed()
 	}
 
 

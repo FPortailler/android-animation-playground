@@ -13,10 +13,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/article_item" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/homeFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

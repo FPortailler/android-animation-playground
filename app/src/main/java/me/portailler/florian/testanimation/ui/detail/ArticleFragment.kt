@@ -1,7 +1,5 @@
 package me.portailler.florian.testanimation.ui.detail
 
-import android.content.Context
-import android.location.GnssAntennaInfo.Listener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +7,6 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.app.SharedElementCallback
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.ViewPropertyAnimatorListener
-import androidx.core.view.doOnPreDraw
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialContainerTransform
@@ -39,13 +33,10 @@ class ArticleFragment : BaseFragment<ArticleFragmentBinding>() {
 	private val enterCallback by lazy {
 		object : SharedElementCallback() {
 			override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
-				super.onMapSharedElements(names, sharedElements)
 				if (transitionName == null) return
-				if (sharedElements == null) return
 				if (names.isNullOrEmpty()) return
-				val element = sharedElements[names.first()]?:return
 				binding.articleImage.transitionName = transitionName
-				ViewCompat.animate(element).start()
+				sharedElements?.put(names.first(), binding.articleImage)
 			}
 		}
 	}
@@ -65,18 +56,10 @@ class ArticleFragment : BaseFragment<ArticleFragmentBinding>() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-
-
 		lifecycleScope.launchWhenCreated {
 			viewModel.currentArticle.collect(::onArticleLoaded)
 		}
-	}
-
-	override fun onAttach(context: Context) {
-		super.onAttach(context)
-		activity?.onBackPressedDispatcher?.addCallback {
-			viewModel.closeCurrentArticle()
-		}
+		requireActivity().onBackPressedDispatcher.addCallback(this) { viewModel.closeCurrentArticle() }
 	}
 
 	private fun onArticleLoaded(article: ArticleEntity?) {
