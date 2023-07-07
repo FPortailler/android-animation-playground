@@ -1,12 +1,13 @@
 package me.portailler.florian.testanimation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import me.portailler.florian.testanimation.databinding.MainActivityBinding
 import me.portailler.florian.testanimation.ui.home.HomeFragment
+import me.portailler.florian.testanimation.ui.menu.MenuActivity
 import me.portailler.florian.testanimation.ui.shared.ArticlesViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 			.add(R.id.mainFragmentContainer, HomeFragment(), HomeFragment::class.java.simpleName)
 			.addToBackStack(HomeFragment::class.java.simpleName)
 			.commit()
+
+		binding.fabMenu.setOnClickListener { startActivity(Intent(this, MenuActivity::class.java)) }
 	}
 
 	override fun onBackPressed() {
