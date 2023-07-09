@@ -10,12 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
+import me.portailler.florian.testanimation.ui.tinder.TinderActivity
 
 class MenuActivity : AppCompatActivity() {
 
 	private lateinit var binding: MenuActivityBinding
 	private val adapter: MenuAdapter by lazy { MenuAdapter(onDestinationClicked = ::onDestinationClicked) }
-	private val destinations = listOf<MenuDestination>()
+	private val destinations = listOf(
+		MenuDestination(
+			title = "Tinder",
+			description = "Swipe cards",
+			activityClass = TinderActivity::class.java
+		),
+	)
 
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +68,7 @@ class MenuActivity : AppCompatActivity() {
 			fun bind(destination: MenuDestination) {
 				binding.menuCellTitle.text = destination.title
 				binding.menuCellDescription.text = destination.description
-				binding.root.setOnClickListener { }
+				binding.root.setOnClickListener { onDestinationClicked(destination) }
 			}
 
 		}
