@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,27 @@ import android.view.ViewGroup
 object TinderViewUtils {
 
 	const val SWIPED_LEFT = -1
-	const val NOT_SWIPED = 0
+	private const val NOT_SWIPED = 0
 	const val SWIPED_RIGHT = 1
 
+	/**
+	 * Enable drag for card
+	 *
+	 * @param emphasis a factor to exaggerate the animation
+	 * @param threshold the percentage of the screen width to trigger the swipe
+	 * @param onSwipe callback when the card is swiped [SWIPED_LEFT] or [SWIPED_RIGHT]
+	 * @param onEnd callback when the card is swiped and the animation is finished (allows to update the view before it enters the screen again)
+	 * @param onCancel callback when the card is not swiped enough to trigger [onSwipe]
+	 * @param onSwipePercentUpdate callback when the card is swiped, gives the percentage of the screen width swiped
+	 */
 	@SuppressLint("ClickableViewAccessibility")
 	fun View.enableDragForCard(
 		emphasis: Float = 1f,
 		threshold: Float = 0.15f,
 		onSwipe: (direction: Int) -> Unit = {},
-		onEnd: (View) -> Unit = {}
+		onEnd: () -> Unit = {},
+		onCancel: () -> Unit = {},
+		onSwipePercentUpdate: (percent: Float) -> Unit = { }
 	) {
 		var touchedDown = false
 		var startEvent: MotionEvent = MotionEvent.obtain(0, 0, 0, 0f, 0f, 0)
@@ -35,7 +46,11 @@ object TinderViewUtils {
 				}
 
 				MotionEvent.ACTION_MOVE -> {
-					if (touchedDown) tilt(startEvent, MotionEvent.obtain(event), emphasys = emphasis)
+					if (touchedDown) {
+						val currentEvent = MotionEvent.obtain(event)
+						tilt(startEvent, currentEvent, emphasys = emphasis)
+						onSwipePercentUpdate(swipePercent(currentEvent))
+					}
 					true
 				}
 
@@ -53,6 +68,7 @@ object TinderViewUtils {
 						}
 
 						NOT_SWIPED -> {
+							onCancel()
 							v.reset()
 						}
 					}
@@ -65,13 +81,15 @@ object TinderViewUtils {
 	}
 
 	private fun View.isSwipedOut(event: MotionEvent, threshold: Float): Int {
-		val parentView = (parent as ViewGroup)
+		val percent = swipePercent(event)
 		return when {
-			event.rawX < (parentView.right.toFloat() * threshold) -> SWIPED_LEFT
-			event.rawX > (parentView.right.toFloat() * (1 - threshold)) -> SWIPED_RIGHT
+			percent < threshold -> SWIPED_LEFT
+			percent > (1 - threshold) -> SWIPED_RIGHT
 			else -> NOT_SWIPED
 		}
 	}
+
+	private fun View.swipePercent(event: MotionEvent): Float = (event.rawX / (parent as ViewGroup).right.toFloat())
 
 	private fun View.tilt(startEvent: MotionEvent, event: MotionEvent, emphasys: Float = 1f) {
 		if (!isEventRealistic(event)) return
@@ -84,7 +102,6 @@ object TinderViewUtils {
 		val translationY = startEvent.y * dragYPercent
 		if (translationX.isInfinite() || translationY.isInfinite()) return
 		if (translationX.isNaN() || translationY.isNaN()) return
-		Log.d("TinderViewUtils", "rotation: $rotation, translationX: $translationX, translationY: $translationY")
 
 		val tiltAnimation = AnimatorSet()
 		tiltAnimation.duration = 0
@@ -141,7 +158,7 @@ object TinderViewUtils {
 		}
 	}
 
-	private fun View.moveOut(direction: Int, startEvent: MotionEvent, event: MotionEvent, onEnd: (View) -> Unit) {
+	private fun View.moveOut(direction: Int, startEvent: MotionEvent, event: MotionEvent, onEnd: () -> Unit) {
 		val dx = direction * (this.context as Activity).window.decorView.width.toFloat()
 		val targetY = startEvent.targetY(event, dx)
 		val xyAnimation = AnimatorSet()
@@ -163,7 +180,7 @@ object TinderViewUtils {
 		xyAnimation.addListener(object : AnimatorListenerAdapter() {
 			override fun onAnimationEnd(animation: Animator) {
 				animation.removeListener(this)
-				onEnd(this@moveOut)
+				onEnd()
 				reset(0)
 			}
 		})

@@ -3,7 +3,6 @@ package me.portailler.florian.testanimation.ui.tinder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +22,7 @@ class TinderActivity : AppCompatActivity() {
 	private lateinit var binding: TinderActivityBinding
 
 	private val viewModel: TinderViewModel by viewModels()
-	private val adapter by lazy { TinderCardAdapter(::onSwipe) }
+	private val adapter by lazy { TinderCardAdapter(::onSwipe, onSwipePercentUpdated = ::onSwipePercentUpdated) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -70,8 +69,13 @@ class TinderActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun onSwipePercentUpdated(percent: Float) {
+		//TODO
+	}
+
 	private class TinderCardAdapter(
-		private val onSwipeListener: (direction: Int, position: Int, item: TinderCardEntity) -> Unit
+		private val onSwipeListener: (direction: Int, position: Int, item: TinderCardEntity) -> Unit,
+		private val onSwipePercentUpdated: (percent: Float) -> Unit = {}
 	) : TinderAdapter<TinderCardEntity>() {
 
 
@@ -89,6 +93,9 @@ class TinderActivity : AppCompatActivity() {
 
 		override fun onSwipe(direction: Int, position: Int, item: TinderCardEntity) = onSwipeListener(direction, position, item)
 
+		override fun onCancel() = Unit
+
+		override fun onSwipePercentUpdate(percent: Float) = onSwipePercentUpdated(percent)
 
 	}
 

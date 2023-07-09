@@ -44,7 +44,9 @@ abstract class TinderAdapter<T> {
 						onEnd = {
 							data.removeAt(0)
 							notifyDataSetChanged()
-						}
+						},
+						onSwipePercentUpdate = ::onSwipePercentUpdate,
+						onCancel = ::onCancel
 					)
 				}
 			}
@@ -52,16 +54,20 @@ abstract class TinderAdapter<T> {
 
 	}
 
-	abstract fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T>
-
 	open fun onBindViewHolder(holder: ViewHolder<T>, position: Int) {
 		val item = data[position]
 		holder.bind(item)
 	}
 
+	abstract fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T>
+
 	abstract fun getItemViewType(position: Int): Int
 
 	abstract fun onSwipe(direction: Int, position: Int, item: T)
+
+	abstract fun onSwipePercentUpdate(percent: Float)
+
+	abstract fun onCancel()
 
 	abstract class ViewHolder<T>(open val binding: ViewBinding) {
 
