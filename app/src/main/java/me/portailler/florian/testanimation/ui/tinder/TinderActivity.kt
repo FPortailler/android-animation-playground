@@ -24,6 +24,7 @@ class TinderActivity : AppCompatActivity() {
 			description = "Description"
 		)
 		binding.tinderCardContainer.enableDragForCard(
+			emphasys = 2.5f,
 			threshold = 0.15f,
 			onSwipe = ::onSwipe,
 			onEnd = ::onSwipeAnimationEnd

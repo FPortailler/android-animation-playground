@@ -7,10 +7,10 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.rotationMatrix
 
 object TinderViewUtils {
 
@@ -30,13 +30,13 @@ object TinderViewUtils {
 		setOnTouchListener { v, event ->
 			when (event.action) {
 				MotionEvent.ACTION_DOWN -> {
+					if (!touchedDown) startEvent = MotionEvent.obtain(event)
 					touchedDown = true
-					startEvent = MotionEvent.obtain(event)
 					true
 				}
 
 				MotionEvent.ACTION_MOVE -> {
-					if (touchedDown) tilt(startEvent, event, emphasys = 2.5f)
+					if (touchedDown) tilt(startEvent, MotionEvent.obtain(event), emphasys = emphasys)
 					true
 				}
 
@@ -75,29 +75,49 @@ object TinderViewUtils {
 	}
 
 	private fun View.tilt(startEvent: MotionEvent, event: MotionEvent, emphasys: Float = 1f) {
-		val dragXPercent = (event.x - startEvent.x) / centerX
-		val dragYPercent = (event.y - startEvent.y) / centerX
-		val rotationMatrix = rotationMatrix(
-			dragXPercent * emphasys,
-			pivotX,
-			pivotY
+		if (!isEventRealistic(event)) return
+		pivotX = width / 2f
+		pivotY = height * 1.25f
+		val dragXPercent = (event.rawX - startEvent.rawX) / startEvent.x
+		val dragYPercent = (event.rawY - startEvent.rawY) / startEvent.y
+		val rotation = emphasys * dragXPercent
+		val translationX = startEvent.x * dragXPercent
+		val translationY = startEvent.y * dragYPercent
+		if (translationX.isInfinite() || translationY.isInfinite()) return
+		if (translationX.isNaN() || translationY.isNaN()) return
+		Log.d("TinderViewUtils", "rotation: $rotation, translationX: $translationX, translationY: $translationY")
+
+		val tiltAnimation = AnimatorSet()
+		tiltAnimation.duration = 0
+		val rotationAnimation = ObjectAnimator.ofFloat(
+			this,
+			View.ROTATION,
+			rotation,
 		)
-		rotationMatrix.preTranslate(this.x * dragXPercent, this.y * dragYPercent * emphasys)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-			animationMatrix = rotationMatrix
-		} else {
-			pivotX = width / 2f
-			pivotY = height * 1.24f
-			rotation = dragXPercent * emphasys
-			translationX = this.x * dragXPercent
-			translationY = this.y * dragYPercent * emphasys
-		}
+		val translationXAnimation = ObjectAnimator.ofFloat(
+			this,
+			View.TRANSLATION_X,
+			translationX
+		)
+		val translationYAnimation = ObjectAnimator.ofFloat(
+			this,
+			View.TRANSLATION_Y,
+			translationY,
+		)
+
+		tiltAnimation.playTogether(
+			translationXAnimation,
+			rotationAnimation,
+			translationYAnimation
+		)
+		tiltAnimation.start()
 	}
 
 	private fun View.reset() {
 		post {
 			translationX = 0f
 			translationY = 0f
+			rotation = 0f
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 				animationMatrix = null
 			} else {
@@ -138,10 +158,21 @@ object TinderViewUtils {
 	}
 
 	private fun MotionEvent.targetY(event: MotionEvent, dx: Float): Float {
-		val factor = (event.x - x) / (event.x + dx - x)
-		return (event.y - y) / factor - (event.y - y)
+		val factor = (event.rawX - rawX) / (event.rawX + dx - rawX)
+		return (event.rawY - rawY) / factor - (event.rawY - rawY)
 	}
 
 	private val View.centerX
-		get() = width / 2f + left
+		get() = width.toFloat() / 2f + left.toFloat()
+
+	private val View.centerY
+		get() = height.toFloat() / 2f + top.toFloat()
+
+	private fun View.isEventRealistic(event: MotionEvent): Boolean {
+		return (context as? Activity)?.window?.decorView?.let {
+			val x = event.rawX
+			val y = event.rawY
+			return@let x > it.left && x < it.right && y > it.top && y < it.bottom
+		} ?: false
+	}
 }
