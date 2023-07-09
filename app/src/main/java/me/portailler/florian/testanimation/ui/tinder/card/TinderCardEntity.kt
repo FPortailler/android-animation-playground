@@ -8,7 +8,17 @@ data class TinderCardEntity(
 ) {
 
 	companion object {
-		private fun url(id: String) = "https://picsum.photos/seed/$id/158/229"
+		private fun url(id: String) = "https://picsum.photos/seed/$id/1024/2048"
+
+		val mocks: List<TinderCardEntity> by lazy {
+			(0..10).map { id ->
+				TinderCardEntity(
+					id = id.toString(),
+					title = "Title $id",
+					description = "Description $id"
+				)
+			}
+		}
 
 	}
 }

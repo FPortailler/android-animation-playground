@@ -19,7 +19,7 @@ object TinderViewUtils {
 
 	@SuppressLint("ClickableViewAccessibility")
 	fun View.enableDragForCard(
-		emphasys: Float = 1f,
+		emphasis: Float = 1f,
 		threshold: Float = 0.15f,
 		onSwipe: (direction: Int) -> Unit = {},
 		onEnd: (View) -> Unit = {}
@@ -35,7 +35,7 @@ object TinderViewUtils {
 				}
 
 				MotionEvent.ACTION_MOVE -> {
-					if (touchedDown) tilt(startEvent, MotionEvent.obtain(event), emphasys = emphasys)
+					if (touchedDown) tilt(startEvent, MotionEvent.obtain(event), emphasys = emphasis)
 					true
 				}
 
