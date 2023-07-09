@@ -1,13 +1,13 @@
 package me.portailler.florian.testanimation.ui.tinder
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.rotationMatrix
 import me.portailler.florian.testanimation.databinding.TinderActivityBinding
 import me.portailler.florian.testanimation.ui.tinder.card.TinderCardEntity
+import me.portailler.florian.testanimation.ui.tinder.utils.TinderViewUtils.SWIPED_LEFT
+import me.portailler.florian.testanimation.ui.tinder.utils.TinderViewUtils.SWIPED_RIGHT
+import me.portailler.florian.testanimation.ui.tinder.utils.TinderViewUtils.enableDragForCard
 
 class TinderActivity : AppCompatActivity() {
 
@@ -23,56 +23,27 @@ class TinderActivity : AppCompatActivity() {
 			title = "Title",
 			description = "Description"
 		)
-		enableDragForCard(entity)
+		binding.tinderCardContainer.enableDragForCard(
+			threshold = 0.15f,
+			onSwipe = ::onSwipe,
+			onEnd = ::onSwipeAnimationEnd
+		)
 	}
 
+	private fun onSwipe(direction: Int) {
+		when (direction) {
+			SWIPED_LEFT -> {
+				//TODO
+			}
 
-	@SuppressLint("ClickableViewAccessibility")
-	private fun enableDragForCard(entity: TinderCardEntity) {
-		binding.tinderCardContainer.apply {
-			var touchedDown = false
-			var startEvent: MotionEvent? = null
-			setOnTouchListener { v, event ->
-				when (event.action) {
-					MotionEvent.ACTION_DOWN -> {
-						touchedDown = true
-						startEvent = MotionEvent.obtain(event)
-						true
-					}
-
-					MotionEvent.ACTION_MOVE -> {
-						if (touchedDown) startEvent?.let { v.tilt(it, event, emphasys = 2f) }
-						true
-					}
-
-					MotionEvent.ACTION_UP -> {
-						v.reset()
-						touchedDown = false
-						true
-					}
-
-					else -> false
-				}
+			SWIPED_RIGHT -> {
+				//TODO
 			}
 		}
 	}
 
-	private fun View.tilt(startEvent: MotionEvent, event: MotionEvent, emphasys: Float = 1f) {
-		val dragXPercent = (event.x - startEvent.x) / startEvent.x
-		val dragYPercent = (event.y - startEvent.y) / startEvent.y
-		pivotX = width / 2f
-		pivotY = height * 1.24f
-		val rotationMatrix = rotationMatrix(
-			dragXPercent * emphasys,
-			pivotX,
-			pivotY
-		)
-		rotationMatrix.preTranslate(this.x * dragXPercent, this.y * dragYPercent * emphasys)
-		animationMatrix = rotationMatrix
-	}
-
-	private fun View.reset() {
-		animationMatrix = null
+	private fun onSwipeAnimationEnd(view: View) {
+		//TODO update the view with the next entity
 	}
 
 }

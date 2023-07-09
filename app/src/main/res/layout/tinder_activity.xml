@@ -5,6 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tinderCardPreview"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="48dp"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/tinder_card" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tinderCardContainer"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
