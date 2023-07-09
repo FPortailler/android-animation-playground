@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.os.Build
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -113,18 +112,32 @@ object TinderViewUtils {
 		tiltAnimation.start()
 	}
 
-	private fun View.reset() {
+	private fun View.reset(duration: Long = 100) {
 		post {
-			translationX = 0f
-			translationY = 0f
-			rotation = 0f
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-				animationMatrix = null
-			} else {
-				rotation = 0f
-				translationX = 0f
-				translationY = 0f
-			}
+			val tiltAnimation = AnimatorSet()
+			tiltAnimation.duration = duration
+			val rotationAnimation = ObjectAnimator.ofFloat(
+				this,
+				View.ROTATION,
+				0f,
+			)
+			val translationXAnimation = ObjectAnimator.ofFloat(
+				this,
+				View.TRANSLATION_X,
+				0f
+			)
+			val translationYAnimation = ObjectAnimator.ofFloat(
+				this,
+				View.TRANSLATION_Y,
+				0f,
+			)
+
+			tiltAnimation.playTogether(
+				translationXAnimation,
+				rotationAnimation,
+				translationYAnimation
+			)
+			tiltAnimation.start()
 		}
 	}
 
@@ -151,7 +164,7 @@ object TinderViewUtils {
 			override fun onAnimationEnd(animation: Animator) {
 				animation.removeListener(this)
 				onEnd(this@moveOut)
-				reset()
+				reset(0)
 			}
 		})
 		xyAnimation.start()
@@ -161,12 +174,6 @@ object TinderViewUtils {
 		val factor = (event.rawX - rawX) / (event.rawX + dx - rawX)
 		return (event.rawY - rawY) / factor - (event.rawY - rawY)
 	}
-
-	private val View.centerX
-		get() = width.toFloat() / 2f + left.toFloat()
-
-	private val View.centerY
-		get() = height.toFloat() / 2f + top.toFloat()
 
 	private fun View.isEventRealistic(event: MotionEvent): Boolean {
 		return (context as? Activity)?.window?.decorView?.let {
