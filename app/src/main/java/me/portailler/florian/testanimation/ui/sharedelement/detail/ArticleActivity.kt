@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation.ui.detail
+package me.portailler.florian.testanimation.ui.sharedelement.detail
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

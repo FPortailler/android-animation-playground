@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
 import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
@@ -21,6 +22,11 @@ class MenuActivity : AppCompatActivity() {
 			title = "Tinder",
 			description = "Swipe cards",
 			activityClass = TinderActivity::class.java
+		),
+		MenuDestination(
+			title = "Shared Element",
+			description = "Image transition from a list to a detail",
+			activityClass = SharedElementActivity::class.java
 		),
 	)
 

@@ -1,10 +1,10 @@
-package me.portailler.florian.testanimation.ui.home
+package me.portailler.florian.testanimation.ui.sharedelement.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import me.portailler.florian.testanimation.ArticleEntity
+import me.portailler.florian.testanimation.ui.sharedelement.ArticleEntity
 import me.portailler.florian.testanimation.databinding.ArticleItemBinding
 import me.portailler.florian.testanimation.loadAndSetImage
 

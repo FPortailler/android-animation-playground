@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation
+package me.portailler.florian.testanimation.ui.sharedelement
 
 import com.thedeanda.lorem.LoremIpsum
 

@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation.ui.home
+package me.portailler.florian.testanimation.ui.sharedelement.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import android.widget.ImageView
 import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import me.portailler.florian.testanimation.ArticleEntity
+import me.portailler.florian.testanimation.ui.sharedelement.ArticleEntity
 import me.portailler.florian.testanimation.R
 import me.portailler.florian.testanimation.databinding.ArticleItemBinding
 import me.portailler.florian.testanimation.databinding.HomeFragmentBinding
-import me.portailler.florian.testanimation.ui.detail.ArticleFragment
+import me.portailler.florian.testanimation.ui.sharedelement.detail.ArticleFragment
 import me.portailler.florian.testanimation.ui.shared.ArticlesViewModel
 import me.portailler.florian.testanimation.ui.shared.BaseFragment
 

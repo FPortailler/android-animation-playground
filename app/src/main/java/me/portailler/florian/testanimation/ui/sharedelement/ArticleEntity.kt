@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation
+package me.portailler.florian.testanimation.ui.sharedelement
 
 data class ArticleEntity(
 	val id: Int,

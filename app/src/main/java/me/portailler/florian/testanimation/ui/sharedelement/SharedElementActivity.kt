@@ -1,16 +1,17 @@
-package me.portailler.florian.testanimation
+package me.portailler.florian.testanimation.ui.sharedelement
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import me.portailler.florian.testanimation.R
 import me.portailler.florian.testanimation.databinding.MainActivityBinding
-import me.portailler.florian.testanimation.ui.home.HomeFragment
+import me.portailler.florian.testanimation.ui.sharedelement.home.HomeFragment
 import me.portailler.florian.testanimation.ui.menu.MenuActivity
 import me.portailler.florian.testanimation.ui.shared.ArticlesViewModel
 
-class MainActivity : AppCompatActivity() {
+class SharedElementActivity : AppCompatActivity() {
 
 	private lateinit var binding: MainActivityBinding
 
