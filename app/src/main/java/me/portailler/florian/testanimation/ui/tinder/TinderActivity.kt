@@ -10,19 +10,28 @@ import androidx.lifecycle.withCreated
 import kotlinx.coroutines.launch
 import me.portailler.florian.testanimation.databinding.TinderActivityBinding
 import me.portailler.florian.testanimation.databinding.TinderCardBinding
-import me.portailler.florian.testanimation.ui.tinder.card.TinderAdapter
+import me.portailler.florian.testanimation.ui.tinder.card.DragAndSwipeAdapter
 import me.portailler.florian.testanimation.ui.tinder.card.TinderCard
 import me.portailler.florian.testanimation.ui.tinder.card.TinderCardEntity
-import me.portailler.florian.testanimation.ui.tinder.utils.TinderViewUtils.SWIPED_LEFT
-import me.portailler.florian.testanimation.ui.tinder.utils.TinderViewUtils.SWIPED_RIGHT
+import me.portailler.florian.testanimation.ui.tinder.utils.ViewUtils.SWIPED_LEFT
+import me.portailler.florian.testanimation.ui.tinder.utils.ViewUtils.SWIPED_RIGHT
 
 class TinderActivity : AppCompatActivity() {
 
+	companion object {
+		private const val SWIPE_THRESHOLD = 0.15f
+	}
 
 	private lateinit var binding: TinderActivityBinding
 
 	private val viewModel: TinderViewModel by viewModels()
-	private val adapter by lazy { TinderCardAdapter(::onSwipe, onSwipePercentUpdated = ::onSwipePercentUpdated) }
+	private val adapter by lazy {
+		DragAndSwipeCardAdapter(
+			swipeThreshold = SWIPE_THRESHOLD,
+			onSwipeListener = ::onSwipe,
+			onSwipePercentUpdated = ::onSwipePercentUpdated
+		)
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -57,26 +66,15 @@ class TinderActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun onSwipe(direction: Int) {
-		when (direction) {
-			SWIPED_LEFT -> {
-				//TODO
-			}
-
-			SWIPED_RIGHT -> {
-				//TODO
-			}
-		}
-	}
-
 	private fun onSwipePercentUpdated(percent: Float) {
 		//TODO
 	}
 
-	private class TinderCardAdapter(
+	private class DragAndSwipeCardAdapter(
+		override var swipeThreshold: Float,
 		private val onSwipeListener: (direction: Int, position: Int, item: TinderCardEntity) -> Unit,
 		private val onSwipePercentUpdated: (percent: Float) -> Unit = {}
-	) : TinderAdapter<TinderCardEntity>() {
+	) : DragAndSwipeAdapter<TinderCardEntity>() {
 
 
 		fun replaceAll(entities: List<TinderCardEntity>) {

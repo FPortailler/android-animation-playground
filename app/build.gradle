@@ -63,5 +63,5 @@ dependencies {
     implementation("io.coil-kt:coil-svg:2.2.2")
 
     // Leak canary
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
 }

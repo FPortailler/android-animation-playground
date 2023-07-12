@@ -5,7 +5,7 @@ import me.portailler.florian.testanimation.loadAndSetImage
 
 class TinderCard(
 	override val binding: TinderCardBinding
-) : TinderAdapter.ViewHolder<TinderCardEntity>(binding) {
+) : DragAndSwipeAdapter.ViewHolder<TinderCardEntity>(binding) {
 
 	override fun bind(item: TinderCardEntity) {
 		binding.title.text = item.title

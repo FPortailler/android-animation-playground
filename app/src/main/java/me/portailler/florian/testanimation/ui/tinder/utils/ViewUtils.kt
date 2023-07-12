@@ -10,14 +10,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 
-object TinderViewUtils {
+object ViewUtils {
 
 	const val SWIPED_LEFT = -1
 	private const val NOT_SWIPED = 0
 	const val SWIPED_RIGHT = 1
 
 	/**
-	 * Enable drag for card
+	 * Enable drag and swipe
 	 *
 	 * @param emphasis a factor to exaggerate the animation
 	 * @param threshold the percentage of the screen width to trigger the swipe
@@ -27,7 +27,7 @@ object TinderViewUtils {
 	 * @param onSwipePercentUpdate callback when the card is swiped, gives the percentage of the screen width swiped
 	 */
 	@SuppressLint("ClickableViewAccessibility")
-	fun View.enableDragForCard(
+	fun View.enableDragAndSwipe(
 		emphasis: Float = 1f,
 		threshold: Float = 0.15f,
 		onSwipe: (direction: Int) -> Unit = {},
@@ -95,11 +95,11 @@ object TinderViewUtils {
 		if (!isEventRealistic(event)) return
 		pivotX = width / 2f
 		pivotY = height * 1.25f
-		val dragXPercent = (event.rawX - startEvent.rawX) / startEvent.x
-		val dragYPercent = (event.rawY - startEvent.rawY) / startEvent.y
+		val dragXPercent = (event.rawX - startEvent.rawX) / startEvent.rawX
+		val dragYPercent = (event.rawY - startEvent.rawY) / startEvent.rawY
 		val rotation = emphasys * dragXPercent
-		val translationX = startEvent.x * dragXPercent
-		val translationY = startEvent.y * dragYPercent
+		val translationX = startEvent.rawX * dragXPercent
+		val translationY = startEvent.rawY * dragYPercent
 		if (translationX.isInfinite() || translationY.isInfinite()) return
 		if (translationX.isNaN() || translationY.isNaN()) return
 
