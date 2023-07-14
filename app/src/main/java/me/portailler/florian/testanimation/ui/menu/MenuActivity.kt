@@ -12,6 +12,7 @@ import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
 import me.portailler.florian.testanimation.ui.tinder.TinderActivity
+import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivity
 
 class MenuActivity : AppCompatActivity() {
 
@@ -22,6 +23,11 @@ class MenuActivity : AppCompatActivity() {
 			title = "Tinder",
 			description = "Swipe cards",
 			activityClass = TinderActivity::class.java
+		),
+		MenuDestination(
+			title = "Tinder Compose",
+			description = "Swipe cards now in compose",
+			activityClass = TinderComposeActivity::class.java
 		),
 		MenuDestination(
 			title = "Shared Element",

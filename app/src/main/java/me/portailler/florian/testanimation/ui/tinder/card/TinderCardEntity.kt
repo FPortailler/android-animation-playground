@@ -1,5 +1,7 @@
 package me.portailler.florian.testanimation.ui.tinder.card
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+
 data class TinderCardEntity(
 	val id: String,
 	val title: String,
@@ -21,4 +23,9 @@ data class TinderCardEntity(
 		}
 
 	}
+}
+
+class TinderCardEntityPreviewProvider : PreviewParameterProvider<TinderCardEntity> {
+	override val values: Sequence<TinderCardEntity>
+		get() = TinderCardEntity.mocks.asSequence()
 }

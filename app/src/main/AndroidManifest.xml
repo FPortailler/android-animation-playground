@@ -27,6 +27,10 @@
         <activity
             android:name=".ui.tinder.TinderActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.tinderCompose.TinderComposeActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
