@@ -122,8 +122,8 @@ fun DragAndSwipeBox(
 							onDragEnd = {
 								val endPoint = (startPoint + currentPoint)
 								val direction = when {
-									endPoint.x < swipeThreshold * size.width -> DIRECTION_LEFT
-									endPoint.x > (1 - swipeThreshold) * size.width -> DIRECTION_RIGHT
+									endPoint.x <= swipeThreshold * size.width -> DIRECTION_LEFT
+									endPoint.x >= (1 - swipeThreshold) * size.width -> DIRECTION_RIGHT
 									else -> DIRECTION_NONE
 								}
 								val dx = direction * size.width.toFloat() * 2
