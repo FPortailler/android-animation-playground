@@ -1,6 +1,7 @@
 package me.portailler.florian.testanimation.ui.tinder
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.viewModels
@@ -15,11 +16,15 @@ import me.portailler.florian.testanimation.ui.tinder.card.TinderCard
 import me.portailler.florian.testanimation.ui.tinder.card.TinderCardEntity
 import me.portailler.florian.testanimation.ui.tinder.utils.ViewUtils.SWIPED_LEFT
 import me.portailler.florian.testanimation.ui.tinder.utils.ViewUtils.SWIPED_RIGHT
+import me.portailler.florian.testanimation.ui.utils.AnimationUtils.fadeIn
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class TinderActivity : AppCompatActivity() {
 
 	companion object {
-		private const val SWIPE_THRESHOLD = 0.15f
+		private const val SWIPE_THRESHOLD = 0.20f
 	}
 
 	private lateinit var binding: TinderActivityBinding
@@ -47,6 +52,8 @@ class TinderActivity : AppCompatActivity() {
 				}
 			}
 		}
+		binding.swipeZoneLeft.alpha = 0f
+		binding.swipeZoneRight.alpha = 0f
 		viewModel.loadEntities()
 	}
 
@@ -67,7 +74,15 @@ class TinderActivity : AppCompatActivity() {
 	}
 
 	private fun onSwipePercentUpdated(percent: Float) {
-		//TODO
+		Log.d("TinderActivity", "onSwipePercentUpdated: percent = $percent")
+		val relativePercent = (percent - 0.5f).coerceIn(-1 + SWIPE_THRESHOLD, 1 - SWIPE_THRESHOLD)
+		val leftAlpha = abs(min(relativePercent, 0f) * 2f)
+		val rightAlpha = max(relativePercent, 0f) * 2f
+		Log.d("TinderActivity", "onSwipePercentUpdated: relativePercent = $relativePercent")
+		Log.d("TinderActivity", "onSwipePercentUpdated: leftAlpha = $leftAlpha")
+		Log.d("TinderActivity", "onSwipePercentUpdated: rightAlpha = $rightAlpha")
+		binding.swipeZoneLeft.fadeIn(leftAlpha, 0)
+		binding.swipeZoneRight.fadeIn(rightAlpha, 0)
 	}
 
 	private class DragAndSwipeCardAdapter(

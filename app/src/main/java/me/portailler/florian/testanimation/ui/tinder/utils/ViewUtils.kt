@@ -72,6 +72,7 @@ object ViewUtils {
 							v.reset()
 						}
 					}
+					onSwipePercentUpdate(0.5f)
 					true
 				}
 
