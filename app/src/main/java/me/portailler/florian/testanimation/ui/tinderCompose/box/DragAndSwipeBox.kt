@@ -23,6 +23,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -103,23 +104,32 @@ fun DragAndSwipeBox(
 			.onGloballyPositioned { size = it.size }
 			.fillMaxSize()
 	) {
-		for (index in currentIndex until min(currentIndex + 2, itemCount)) {
+		if (itemCount == 0) return@Box
+		for (index in currentIndex..min(currentIndex + 1, itemCount - 1)) {
 			build(
 				Modifier
-					.detectDragAndSwipeGesture(
-						state = DragAndSwipeState(
-							animatedX = animatableX.value.toInt(),
-							animatedY = animatableY.value.toInt(),
-							animatedAngle = animatableRotationAngle.value,
-							animationState = animationState
-						),
-						tiltEmphasis = tiltEmphasis,
-						swipeThreshold = swipeThreshold,
-						resetAnimationDuration = resetAnimationDuration,
-						onStateUpdate = { newState -> animationState = newState.animationState },
-						onSwipe = { direction -> onSwipe(direction, index) },
-						onDrag = { progress -> onDrag(index, progress) }
-					),
+					.zIndex(
+						kotlin.math
+							.abs(currentIndex - index + 2)
+							.toFloat()
+					)
+					.let {
+						if (index == currentIndex) it.detectDragAndSwipeGesture(
+							state = DragAndSwipeState(
+								animatedX = animatableX.value.toInt(),
+								animatedY = animatableY.value.toInt(),
+								animatedAngle = animatableRotationAngle.value,
+								animationState = animationState
+							),
+							tiltEmphasis = tiltEmphasis,
+							swipeThreshold = swipeThreshold,
+							resetAnimationDuration = resetAnimationDuration,
+							onStateUpdate = { newState -> animationState = newState.animationState },
+							onSwipe = { direction -> onSwipe(direction, index) },
+							onDrag = { progress -> onDrag(index, progress) }
+						)
+						else it
+					},
 				index
 			)
 		}
