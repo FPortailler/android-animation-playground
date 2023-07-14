@@ -125,8 +125,8 @@ fun DragAndSwipeBox(
 							swipeThreshold = swipeThreshold,
 							resetAnimationDuration = resetAnimationDuration,
 							onStateUpdate = { newState -> animationState = newState.animationState },
-							onSwipe = { direction -> onSwipe(direction, index) },
-							onDrag = { progress -> onDrag(index, progress) }
+							onSwipe = { direction -> onSwipe(direction, currentIndex) },
+							onDrag = { progress -> onDrag(currentIndex, progress) }
 						)
 						else it
 					},

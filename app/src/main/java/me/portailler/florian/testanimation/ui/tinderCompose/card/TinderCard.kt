@@ -27,14 +27,14 @@ fun TinderCard(
 	Box(
 		modifier = modifier
 			.fillMaxSize()
-			.clip(MaterialTheme.shapes.medium)
-			.background(MaterialTheme.colorScheme.surface),
+			.clip(MaterialTheme.shapes.medium),
 		contentAlignment = Alignment.BottomCenter
 	) {
 		AsyncImage(
 			model = entity.url,
 			contentDescription = null,
 			contentScale = ContentScale.Crop,
+
 			modifier = Modifier.fillMaxSize()
 		)
 		Box(
