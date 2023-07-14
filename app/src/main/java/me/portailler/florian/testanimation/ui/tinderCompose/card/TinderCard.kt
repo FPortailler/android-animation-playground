@@ -21,10 +21,11 @@ import me.portailler.florian.testanimation.ui.tinder.card.TinderCardEntityPrevie
 
 @Composable
 fun TinderCard(
+	modifier: Modifier = Modifier,
 	entity: TinderCardEntity
 ) {
 	Box(
-		modifier = Modifier
+		modifier = modifier
 			.fillMaxSize()
 			.clip(MaterialTheme.shapes.medium)
 			.background(MaterialTheme.colorScheme.surface),
@@ -39,13 +40,15 @@ fun TinderCard(
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.background(Brush.verticalGradient(
-					listOf(
-						MaterialTheme.colorScheme.primary.copy(alpha = 0f),
-						MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-						MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+				.background(
+					Brush.verticalGradient(
+						listOf(
+							MaterialTheme.colorScheme.primary.copy(alpha = 0f),
+							MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+							MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+						)
 					)
-				)),
+				),
 			contentAlignment = Alignment.BottomCenter
 		) {
 			Column(
@@ -68,6 +71,6 @@ private fun TinderCardPreview(
 	@PreviewParameter(TinderCardEntityPreviewProvider::class) entity: TinderCardEntity
 ) {
 	MaterialTheme {
-		TinderCard(entity)
+		TinderCard(Modifier, entity)
 	}
 }

@@ -24,8 +24,11 @@ fun TinderScreen(
 	DragAndSwipeBox(
 		modifier = Modifier.padding(48.dp),
 		itemCount = entities.size,
-		build = {
-			TinderCard(entity = entities[it])
+		build = { modifier, index ->
+			TinderCard(
+				modifier = modifier,
+				entity = entities[index]
+			)
 		}, onSwipe = { direction: Int, index: Int ->
 			Log.d("TinderScreen", "onSwipe: $direction, $index")
 		}, onDrag = { index: Int, progress: Float ->

@@ -1,8 +1,6 @@
 package me.portailler.florian.testanimation.ui.tinderCompose.box
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.EaseInBounce
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -41,136 +39,204 @@ fun DragAndSwipeBox(
 	tiltEmphasis: Float = 5f,
 	swipeThreshold: Float = 0.2f,
 	resetAnimationDuration: Int = 300,
-	build: @Composable (index: Int) -> Unit,
+	build: @Composable (Modifier, index: Int) -> Unit,
 	onSwipe: (direction: Int, index: Int) -> Unit,
 	onDrag: (index: Int, progress: Float) -> Unit,
 ) {
-	val currentIndex by rememberSaveable { mutableStateOf(0) }
+	var currentIndex by rememberSaveable { mutableStateOf(0) }
 	val animatableX = remember { Animatable(0f) }
 	val animatableY = remember { Animatable(0f) }
 	val animatableRotationAngle = remember { Animatable(0f) }
-	var currentPoint by remember { mutableStateOf(Offset.Zero) }
-	var startPoint by remember { mutableStateOf(Offset.Zero) }
 	var size by remember { mutableStateOf(IntSize.Zero) }
-	var rotationAngle by remember { mutableStateOf(0f) }
 	var animationState: AnimationState by remember { mutableStateOf(AnimationState.Idle, neverEqualPolicy()) }
 
-	LaunchedEffect(currentPoint) {
-		if (rotationAngle != 0f) {
-			animatableX.snapTo(currentPoint.x)
-			animatableY.snapTo(currentPoint.y)
-			animatableRotationAngle.snapTo(rotationAngle)
-		}
-	}
-
 	LaunchedEffect(animationState) {
-		val state = (animationState as? AnimationState.Target) ?: return@LaunchedEffect
-		if (state.x != 0f) launch {
-			delay(state.duration.toLong())
-			animationState = AnimationState.Target(duration = 0)
-		}
+		when (animationState) {
+			is AnimationState.Dragging -> {
+				animatableX.snapTo(animationState.x)
+				animatableY.snapTo(animationState.y)
+				animatableRotationAngle.snapTo(animationState.angle)
+			}
 
-		launch {
-			animatableX.animateTo(
-				targetValue = state.x,
-				animationSpec = tween(
-					durationMillis = state.duration,
-					easing = EaseInOut
-				)
-			)
-		}
-		launch {
-			animatableY.animateTo(
-				targetValue = state.y,
-				animationSpec = tween(
-					durationMillis = state.duration,
-					easing = EaseInOut
-				),
-			)
-		}
-		launch {
-			animatableRotationAngle.animateTo(
-				targetValue = state.angle,
-				animationSpec = tween(
-					durationMillis = state.duration,
-					easing = EaseInBounce
-				),
-			)
+			is AnimationState.Reset,
+			is AnimationState.SwipeOut -> {
+				launch {
+					animatableX.animateTo(
+						targetValue = animationState.x,
+						animationSpec = tween(
+							durationMillis = animationState.duration,
+							easing = EaseInOut
+						)
+					)
+				}
+				launch {
+					animatableY.animateTo(
+						targetValue = animationState.y,
+						animationSpec = tween(
+							durationMillis = animationState.duration,
+							easing = EaseInOut
+						)
+					)
+				}
+				launch {
+					animatableRotationAngle.animateTo(
+						targetValue = animationState.angle,
+						animationSpec = tween(
+							durationMillis = animationState.duration,
+							easing = EaseInOut
+						)
+					)
+				}
+				if (animationState is AnimationState.SwipeOut) launch {
+					delay(resetAnimationDuration.toLong())
+					currentIndex++
+					animationState = AnimationState.Reset(duration = 0)
+				}
+			}
+
+			else -> Unit
 		}
 	}
 
-	Box(modifier = modifier
-		.onGloballyPositioned {
-			size = it.size
-		}
+	Box(
+		modifier = modifier
+			.onGloballyPositioned { size = it.size }
+			.fillMaxSize()
 	) {
 		for (index in currentIndex until min(currentIndex + 2, itemCount)) {
-			Box(
-				modifier = Modifier
-					.fillMaxSize()
-					.pointerInput(Unit) {
-						detectDragGestures(
-							onDragStart = {
-								startPoint = it.copy()
-								currentPoint = Offset.Zero
-							},
-							onDragCancel = {
-								Log.d("DragAndSwipeBox", "onDragCancel")
-								startPoint = Offset.Zero
-								animationState = AnimationState.Target(duration = resetAnimationDuration)
-							},
-							onDragEnd = {
-								val endPoint = (startPoint + currentPoint)
-								val direction = when {
-									endPoint.x <= swipeThreshold * size.width -> DIRECTION_LEFT
-									endPoint.x >= (1 - swipeThreshold) * size.width -> DIRECTION_RIGHT
-									else -> DIRECTION_NONE
-								}
-								val dx = direction * size.width.toFloat() * 2
-								animationState = AnimationState.Target(
-									x = dx,
-									y = if (dx == 0f) 0f else startPoint.targetY(endPoint, dx),
-									angle = if (dx == 0f) 0f else rotationAngle,
-									duration = resetAnimationDuration
-								)
-								startPoint = Offset.Zero
-								Log.d("DragAndSwipeBox", "onDragEnd ($animationState)")
-							}
-						) { change, dragAmount ->
-							change.consume()
-							currentPoint += dragAmount
-							rotationAngle = currentPoint.x.div(max(1f, startPoint.x)) * tiltEmphasis
-						}
-					}
-					.offset {
-						IntOffset(
-							animatableX.value.toInt(),
-							animatableY.value.toInt()
-						)
-					}
-					.graphicsLayer(
-						transformOrigin = TransformOrigin(
-							pivotFractionX = 0.5f,
-							pivotFractionY = 1.25f,
+			build(
+				Modifier
+					.detectDragAndSwipeGesture(
+						state = DragAndSwipeState(
+							animatedX = animatableX.value.toInt(),
+							animatedY = animatableY.value.toInt(),
+							animatedAngle = animatableRotationAngle.value,
+							animationState = animationState
 						),
-						rotationZ = animatableRotationAngle.value,
-					)
-			) {
-				build(index)
-			}
+						tiltEmphasis = tiltEmphasis,
+						swipeThreshold = swipeThreshold,
+						resetAnimationDuration = resetAnimationDuration,
+						onStateUpdate = { newState -> animationState = newState.animationState },
+						onSwipe = { direction -> onSwipe(direction, index) },
+						onDrag = { progress -> onDrag(index, progress) }
+					),
+				index
+			)
 		}
 	}
 }
 
+private fun Modifier.detectDragAndSwipeGesture(
+	state: DragAndSwipeState,
+	tiltEmphasis: Float = 5f,
+	swipeThreshold: Float = 0.2f,
+	resetAnimationDuration: Int = 300,
+	onStateUpdate: (DragAndSwipeState) -> Unit,
+	onSwipe: (direction: Int) -> Unit,
+	onDrag: (progress: Float) -> Unit,
+): Modifier = this
+	.pointerInput(Unit) {
+		var currentPoint = Offset.Zero
+		var startPoint = Offset.Zero
+		var rotationAngle = 0f
 
-private sealed interface AnimationState {
-	object Idle : AnimationState
-	data class Target(
-		val x: Float = 0f,
-		val y: Float = 0f,
-		val angle: Float = 0f,
-		val duration: Int = 0
-	) : AnimationState
+		detectDragGestures(
+			onDragStart = {
+				startPoint = it.copy()
+				currentPoint = Offset.Zero
+
+			},
+			onDragCancel = {
+				startPoint = Offset.Zero
+				onStateUpdate(
+					state.copy(
+						animationState = AnimationState.Reset(duration = resetAnimationDuration)
+					)
+				)
+			},
+			onDragEnd = {
+
+				val endPoint = (startPoint + currentPoint)
+				val direction = when {
+					endPoint.x <= swipeThreshold * size.width -> DIRECTION_LEFT
+					endPoint.x >= (1 - swipeThreshold) * size.width -> DIRECTION_RIGHT
+					else -> DIRECTION_NONE
+				}
+				val dx = direction * size.width.toFloat() * 2
+				onStateUpdate(
+					state.copy(
+						animationState = if (direction == DIRECTION_NONE) AnimationState.Reset(duration = resetAnimationDuration)
+						else AnimationState.SwipeOut(
+							x = dx,
+							y = startPoint.targetY(endPoint, dx),
+							angle = rotationAngle,
+							duration = resetAnimationDuration
+						),
+					)
+				)
+				onSwipe(direction)
+			}
+		) { change, dragAmount ->
+			change.consume()
+			currentPoint += dragAmount
+			rotationAngle = currentPoint.x.div(max(1f, startPoint.x)) * tiltEmphasis
+			onStateUpdate(
+				state.copy(
+					animationState = AnimationState.Dragging(
+						x = currentPoint.x,
+						y = currentPoint.y,
+						angle = rotationAngle,
+					)
+				)
+			)
+			onDrag((startPoint.x + currentPoint.x) / size.width)
+		}
+	}
+	.offset {
+		IntOffset(
+			state.animatedX,
+			state.animatedY
+		)
+	}
+	.graphicsLayer(
+		transformOrigin = TransformOrigin(
+			pivotFractionX = 0.5f,
+			pivotFractionY = 1.25f,
+		),
+		rotationZ = state.animatedAngle,
+	)
+
+
+private data class DragAndSwipeState(
+	val animatedX: Int,
+	val animatedY: Int,
+	val animatedAngle: Float,
+	val animationState: AnimationState = AnimationState.Idle,
+)
+
+private sealed class AnimationState(
+	open val x: Float = 0f,
+	open val y: Float = 0f,
+	open val angle: Float = 0f,
+	open val duration: Int = 0,
+) {
+	object Idle : AnimationState()
+
+	data class Dragging(
+		override val x: Float = 0f,
+		override val y: Float = 0f,
+		override val angle: Float = 0f,
+		override val duration: Int = 0,
+	) : AnimationState()
+
+	data class SwipeOut(
+		override val x: Float = 0f,
+		override val y: Float = 0f,
+		override val angle: Float = 0f,
+		override val duration: Int = 0
+	) : AnimationState()
+
+	data class Reset(override val duration: Int) : AnimationState(duration = duration)
 }
 
 private fun Offset.targetY(offset: Offset, dx: Float): Float {
