@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -52,7 +53,7 @@ fun DragAndSwipeBox(
 	var startPoint by remember { mutableStateOf(Offset.Zero) }
 	var size by remember { mutableStateOf(IntSize.Zero) }
 	var rotationAngle by remember { mutableStateOf(0f) }
-	var animationState: AnimationState by remember { mutableStateOf(AnimationState.Idle) }
+	var animationState: AnimationState by remember { mutableStateOf(AnimationState.Idle, neverEqualPolicy()) }
 
 	LaunchedEffect(currentPoint) {
 		if (rotationAngle != 0f) {
@@ -68,6 +69,7 @@ fun DragAndSwipeBox(
 			delay(state.duration.toLong())
 			animationState = AnimationState.Target(duration = 0)
 		}
+
 		launch {
 			animatableX.animateTo(
 				targetValue = state.x,
@@ -131,8 +133,8 @@ fun DragAndSwipeBox(
 									angle = if (dx == 0f) 0f else rotationAngle,
 									duration = resetAnimationDuration
 								)
-								Log.d("DragAndSwipeBox", "onDragEnd ($animationState)")
 								startPoint = Offset.Zero
+								Log.d("DragAndSwipeBox", "onDragEnd ($animationState)")
 							}
 						) { change, dragAmount ->
 							change.consume()
