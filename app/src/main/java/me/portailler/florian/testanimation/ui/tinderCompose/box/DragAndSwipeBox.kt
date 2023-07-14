@@ -110,26 +110,24 @@ fun DragAndSwipeBox(
 				Modifier
 					.zIndex(
 						kotlin.math
-							.abs(currentIndex - index + 2)
+							.abs(itemCount - index)
 							.toFloat()
 					)
-					.let {
-						if (index == currentIndex) it.detectDragAndSwipeGesture(
-							state = DragAndSwipeState(
-								animatedX = animatableX.value.toInt(),
-								animatedY = animatableY.value.toInt(),
-								animatedAngle = animatableRotationAngle.value,
-								animationState = animationState
-							),
-							tiltEmphasis = tiltEmphasis,
-							swipeThreshold = swipeThreshold,
-							resetAnimationDuration = resetAnimationDuration,
-							onStateUpdate = { newState -> animationState = newState.animationState },
-							onSwipe = { direction -> onSwipe(direction, currentIndex) },
-							onDrag = { progress -> onDrag(currentIndex, progress) }
-						)
-						else it
-					},
+					.detectDragAndSwipeGesture(
+						enabled = index == currentIndex,
+						state = DragAndSwipeState(
+							animatedX = animatableX.value.toInt(),
+							animatedY = animatableY.value.toInt(),
+							animatedAngle = animatableRotationAngle.value,
+							animationState = animationState
+						),
+						tiltEmphasis = tiltEmphasis,
+						swipeThreshold = swipeThreshold,
+						resetAnimationDuration = resetAnimationDuration,
+						onStateUpdate = { newState -> animationState = newState.animationState },
+						onSwipe = { direction -> onSwipe(direction, currentIndex) },
+						onDrag = { progress -> onDrag(currentIndex, progress) }
+					),
 				index
 			)
 		}
@@ -137,6 +135,7 @@ fun DragAndSwipeBox(
 }
 
 private fun Modifier.detectDragAndSwipeGesture(
+	enabled: Boolean,
 	state: DragAndSwipeState,
 	tiltEmphasis: Float = 5f,
 	swipeThreshold: Float = 0.2f,
@@ -144,8 +143,8 @@ private fun Modifier.detectDragAndSwipeGesture(
 	onStateUpdate: (DragAndSwipeState) -> Unit,
 	onSwipe: (direction: Int) -> Unit,
 	onDrag: (progress: Float) -> Unit,
-): Modifier = this
-	.pointerInput(Unit) {
+): Modifier = this.takeIf { enabled }
+	?.pointerInput(Unit) {
 		var currentPoint = Offset.Zero
 		var startPoint = Offset.Zero
 		var rotationAngle = 0f
@@ -202,19 +201,19 @@ private fun Modifier.detectDragAndSwipeGesture(
 			onDrag((startPoint.x + currentPoint.x) / size.width)
 		}
 	}
-	.offset {
+	?.offset {
 		IntOffset(
 			state.animatedX,
 			state.animatedY
 		)
 	}
-	.graphicsLayer(
+	?.graphicsLayer(
 		transformOrigin = TransformOrigin(
 			pivotFractionX = 0.5f,
 			pivotFractionY = 1.25f,
 		),
 		rotationZ = state.animatedAngle,
-	)
+	) ?: this
 
 
 private data class DragAndSwipeState(
