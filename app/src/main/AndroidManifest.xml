@@ -31,6 +31,10 @@
         <activity
             android:name=".ui.tinderCompose.TinderComposeActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.joystick.JoystickActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -20,9 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,7 +46,6 @@ fun DragAndSwipeBox(
 	val animatableX = remember { Animatable(0f) }
 	val animatableY = remember { Animatable(0f) }
 	val animatableRotationAngle = remember { Animatable(0f) }
-	var size by remember { mutableStateOf(IntSize.Zero) }
 	var animationState: AnimationState by remember { mutableStateOf(AnimationState.Idle, neverEqualPolicy()) }
 
 	LaunchedEffect(animationState) {
@@ -101,7 +98,6 @@ fun DragAndSwipeBox(
 
 	Box(
 		modifier = modifier
-			.onGloballyPositioned { size = it.size }
 			.fillMaxSize()
 	) {
 		if (itemCount == 0) return@Box
