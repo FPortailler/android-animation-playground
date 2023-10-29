@@ -35,6 +35,10 @@
         <activity
             android:name=".ui.joystick.JoystickActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.snackbar.SnackbarActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

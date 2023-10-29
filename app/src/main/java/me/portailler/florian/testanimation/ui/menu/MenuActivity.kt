@@ -12,6 +12,7 @@ import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
+import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
 import me.portailler.florian.testanimation.ui.tinder.TinderActivity
 import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivity
 
@@ -40,6 +41,11 @@ class MenuActivity : AppCompatActivity() {
 			description = "Just a joystick composable",
 			activityClass = JoystickActivity::class.java
 		),
+		MenuDestination(
+			title = "Snackbar",
+			description = "A snackbar with a custom animation",
+			activityClass = SnackbarActivity::class.java
+		)
 	)
 
 
