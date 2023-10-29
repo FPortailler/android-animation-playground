@@ -16,6 +16,8 @@ abstract class DragAndSwipeAdapter<T> {
 	 */
 	protected open var swipeThreshold = 0.15f
 
+	protected open var stackSize = 2
+
 	private var parentView: ViewGroup? = null
 	private val viewHolders = mutableMapOf<Int, List<ViewHolder<T>>>()
 	val data: MutableList<T> = mutableListOf()
@@ -37,7 +39,7 @@ abstract class DragAndSwipeAdapter<T> {
 		parent.removeAllViews()
 		if (data.isEmpty()) return
 
-		val subData = data.take(2)
+		val subData = data.take(stackSize)
 		subData.forEachIndexed { index, t ->
 			with(getItemViewType(index)) {
 				// Get the top available view holder
@@ -72,7 +74,7 @@ abstract class DragAndSwipeAdapter<T> {
 
 	}
 
-	open fun onBindViewHolder(holder: ViewHolder<T>, position: Int) = holder.bind(data[position])
+	open fun onBindViewHolder(holder: ViewHolder<T>, position: Int) = holder.bind(data[position], position)
 
 	abstract fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T>
 
@@ -86,7 +88,7 @@ abstract class DragAndSwipeAdapter<T> {
 
 	abstract class ViewHolder<T>(open val binding: ViewBinding) {
 
-		abstract fun bind(item: T)
+		abstract fun bind(item: T, position: Int)
 
 	}
 }

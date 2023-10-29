@@ -91,6 +91,7 @@ class TinderActivity : AppCompatActivity() {
 		private val onSwipePercentUpdated: (percent: Float) -> Unit = {}
 	) : DragAndSwipeAdapter<TinderCardEntity>() {
 
+		override var stackSize: Int = 5
 
 		fun replaceAll(entities: List<TinderCardEntity>) {
 			this.data.clear()
