@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import me.portailler.florian.testanimation.databinding.ModalFragmentBinding
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_FULL_HEIGHT
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_HALF_HEIGHT
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_LOW_HEIGHT
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_MINIMIZABLE
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.setHandleBehavior
 import me.portailler.florian.testanimation.ui.shared.BaseFragment
 
 open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 	companion object {
+
 		fun newInstance(): ModalFragment = ModalFragment()
 	}
 
@@ -26,8 +32,9 @@ open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 		setContentView(binding.modalFragmentContainer)
 		binding.modalFragmentHandle.setHandleBehavior(
 			binding.root,
-			onDragCancelled = ::onDragCancelled,
-			onDraggedOut = ::onDraggedOut
+			onDragRelease = ::onDragRelease,
+			onDraggedOut = ::onDraggedOut,
+			flags = FLAG_FULL_HEIGHT or FLAG_HALF_HEIGHT or FLAG_LOW_HEIGHT or FLAG_MINIMIZABLE
 		)
 		binding.root.isVisible = true
 	}
@@ -43,8 +50,8 @@ open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 		draggedOutListener?.invoke(this)
 	}
 
-	private fun onDragCancelled() {
-		Log.d("ModalFragment", "onDragCancelled")
+	private fun onDragRelease(level: ModalUtils.DragLevel) {
+		Log.d("ModalFragment", "onDragRelease $level")
 	}
 
 }
