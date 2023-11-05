@@ -12,8 +12,10 @@ import android.view.ViewGroup
 
 object ViewUtils {
 
-	const val SWIPED_LEFT = -1
+	private const val FIFTY_PERCENT = 0.5f
 	private const val NOT_SWIPED = 0
+	private const val PIVOT_POINT_VERTICAL_FACTOR = 1.25f
+	const val SWIPED_LEFT = -1
 	const val SWIPED_RIGHT = 1
 
 	/**
@@ -22,7 +24,8 @@ object ViewUtils {
 	 * @param emphasis a factor to exaggerate the animation
 	 * @param threshold the percentage of the screen width to trigger the swipe
 	 * @param onSwipe callback when the card is swiped [SWIPED_LEFT] or [SWIPED_RIGHT]
-	 * @param onEnd callback when the card is swiped and the animation is finished (allows to update the view before it enters the screen again)
+	 * @param onEnd callback when the card is swiped and the animation is finished
+	 * (allows to update the view before it enters the screen again)
 	 * @param onCancel callback when the card is not swiped enough to trigger [onSwipe]
 	 * @param onSwipePercentUpdate callback when the card is swiped, gives the percentage of the screen width swiped
 	 */
@@ -72,7 +75,7 @@ object ViewUtils {
 							v.reset()
 						}
 					}
-					onSwipePercentUpdate(0.5f)
+					onSwipePercentUpdate(FIFTY_PERCENT)
 					true
 				}
 
@@ -95,7 +98,7 @@ object ViewUtils {
 	private fun View.tilt(startEvent: MotionEvent, event: MotionEvent, emphasys: Float = 1f) {
 		if (!isEventRealistic(event)) return
 		pivotX = width / 2f
-		pivotY = height * 1.25f
+		pivotY = height * PIVOT_POINT_VERTICAL_FACTOR
 		val dragXPercent = (event.rawX - startEvent.rawX) / startEvent.rawX
 		val dragYPercent = (event.rawY - startEvent.rawY) / startEvent.rawY
 		val rotation = emphasys * dragXPercent

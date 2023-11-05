@@ -1,6 +1,7 @@
 package me.portailler.florian.testanimation.ui.snackbar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -36,13 +37,18 @@ class SnackbarActivity : AppCompatActivity() {
 	}
 
 	private fun onActionClicked(snackbarEntity: SnackbarEntity) {
+		Log.d("SNACKBAR", "onActionClicked $snackbarEntity")
 	}
 
 
 	private class SnackbarAdatper(
 		private val onActionClicked: (SnackbarEntity) -> Unit
 	) : DismissAdapter<SnackbarEntity>() {
-		override fun getDismissDelay(item: SnackbarEntity): Long = if (item.action != null) -1 else 3000
+		companion object {
+			private const val READ_ONLY_ITEM_DISMISS_DELAY: Long = 3000L
+		}
+
+		override fun getDismissDelay(item: SnackbarEntity): Long = if (item.action != null) -1 else READ_ONLY_ITEM_DISMISS_DELAY
 
 		override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DismissableViewHolder<SnackbarEntity> {
 			return SnackbarViewHolder(

@@ -6,17 +6,23 @@ import me.portailler.florian.testanimation.ui.tinder.utils.ViewUtils.enableDragA
 
 abstract class DragAndSwipeAdapter<T> {
 
+	companion object {
+		const val DEFAULT_EMPHASIS = 5f
+		const val DEFAULT_SWIPE_THRESHOLD = 0.15f
+		const val DEFAULT_STACK_SIZE = 2
+	}
+
 	/**
 	 * Emphasis a factor to exaggerate the animation
 	 */
-	protected open var emphasis = 5f
+	protected open var emphasis = DEFAULT_EMPHASIS
 
 	/**
 	 * Swipe threshold the percentage of the screen width to trigger the swipe
 	 */
-	protected open var swipeThreshold = 0.15f
+	protected open var swipeThreshold = DEFAULT_SWIPE_THRESHOLD
 
-	protected open var stackSize = 2
+	protected open var stackSize = DEFAULT_STACK_SIZE
 
 	private var parentView: ViewGroup? = null
 	private val viewHolders = mutableMapOf<Int, List<ViewHolder<T>>>()

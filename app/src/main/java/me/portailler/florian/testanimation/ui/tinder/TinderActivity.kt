@@ -25,6 +25,7 @@ class TinderActivity : AppCompatActivity() {
 
 	companion object {
 		private const val SWIPE_THRESHOLD = 0.20f
+		private const val FIFTY_PERCENT = 0.5f
 	}
 
 	private lateinit var binding: TinderActivityBinding
@@ -64,18 +65,18 @@ class TinderActivity : AppCompatActivity() {
 	private fun onSwipe(direction: Int, position: Int, item: TinderCardEntity) {
 		when (direction) {
 			SWIPED_LEFT -> {
-				//TODO
+				Log.d("TinderActivity", "onSwipe: SWIPED_LEFT position = $position item = ${item.id}")
 			}
 
 			SWIPED_RIGHT -> {
-				//TODO
+				Log.d("TinderActivity", "onSwipe: SWIPED_RIGHT position = $position item = ${item.id}")
 			}
 		}
 	}
 
 	private fun onSwipePercentUpdated(percent: Float) {
 		Log.d("TinderActivity", "onSwipePercentUpdated: percent = $percent")
-		val relativePercent = (percent - 0.5f).coerceIn(-1 + SWIPE_THRESHOLD, 1 - SWIPE_THRESHOLD)
+		val relativePercent = (percent - FIFTY_PERCENT).coerceIn(-1 + SWIPE_THRESHOLD, 1 - SWIPE_THRESHOLD)
 		val leftAlpha = abs(min(relativePercent, 0f) * 2f)
 		val rightAlpha = max(relativePercent, 0f) * 2f
 		Log.d("TinderActivity", "onSwipePercentUpdated: relativePercent = $relativePercent")
@@ -91,7 +92,11 @@ class TinderActivity : AppCompatActivity() {
 		private val onSwipePercentUpdated: (percent: Float) -> Unit = {}
 	) : DragAndSwipeAdapter<TinderCardEntity>() {
 
-		override var stackSize: Int = 5
+		companion object {
+			private const val DEFAULT_STACK_SIZE: Int = 5
+		}
+
+		override var stackSize: Int = DEFAULT_STACK_SIZE
 
 		fun replaceAll(entities: List<TinderCardEntity>) {
 			this.data.clear()

@@ -8,13 +8,13 @@ import android.widget.ImageView
 import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import me.portailler.florian.testanimation.ui.sharedelement.ArticleEntity
 import me.portailler.florian.testanimation.R
 import me.portailler.florian.testanimation.databinding.ArticleItemBinding
 import me.portailler.florian.testanimation.databinding.HomeFragmentBinding
-import me.portailler.florian.testanimation.ui.sharedelement.detail.ArticleFragment
 import me.portailler.florian.testanimation.ui.shared.ArticlesViewModel
 import me.portailler.florian.testanimation.ui.shared.BaseFragment
+import me.portailler.florian.testanimation.ui.sharedelement.ArticleEntity
+import me.portailler.florian.testanimation.ui.sharedelement.detail.ArticleFragment
 
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
@@ -25,7 +25,8 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 			override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
 				if (names.isNullOrEmpty()) return
 				val article = viewModel.currentArticle.value ?: return
-				val viewHolder = binding.recyclerView.findViewHolderForAdapterPosition(article.id) as? ArticlesAdapter.ArticleItem ?: return
+				val viewHolder = binding.recyclerView
+					.findViewHolderForAdapterPosition(article.id) as? ArticlesAdapter.ArticleItem ?: return
 				sharedElements?.put(names.first(), viewHolder.getImageView())
 			}
 		}

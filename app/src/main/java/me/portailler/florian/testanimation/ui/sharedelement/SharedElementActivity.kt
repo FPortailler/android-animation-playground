@@ -3,19 +3,15 @@ package me.portailler.florian.testanimation.ui.sharedelement
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import me.portailler.florian.testanimation.R
 import me.portailler.florian.testanimation.databinding.MainActivityBinding
-import me.portailler.florian.testanimation.ui.sharedelement.home.HomeFragment
 import me.portailler.florian.testanimation.ui.menu.MenuActivity
-import me.portailler.florian.testanimation.ui.shared.ArticlesViewModel
+import me.portailler.florian.testanimation.ui.sharedelement.home.HomeFragment
 
 class SharedElementActivity : AppCompatActivity() {
 
 	private lateinit var binding: MainActivityBinding
-
-	private val viewModel: ArticlesViewModel by viewModels()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -41,6 +37,5 @@ class SharedElementActivity : AppCompatActivity() {
 //		}
 		super.onBackPressed()
 	}
-
 
 }
