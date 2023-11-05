@@ -12,6 +12,7 @@ import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
+import me.portailler.florian.testanimation.ui.modale.ModalActivity
 import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
 import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
@@ -48,6 +49,11 @@ class MenuActivity : AppCompatActivity() {
 			title = "Snackbar",
 			description = "A snackbar with a custom animation",
 			activityClass = SnackbarActivity::class.java
+		),
+		MenuDestination(
+			title = "Modal",
+			description = "An attempt to make iOS modal look and feel",
+			activityClass = ModalActivity::class.java
 		)
 	)
 

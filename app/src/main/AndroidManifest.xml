@@ -39,6 +39,10 @@
         <activity
             android:name=".ui.snackbar.SnackbarActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.modale.ModalActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
