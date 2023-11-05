@@ -11,6 +11,7 @@ import me.portailler.florian.testanimation.databinding.ModalFragmentBinding
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_FULL_HEIGHT
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.setHandleBehavior
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.swipeOut
 import me.portailler.florian.testanimation.ui.shared.BaseFragment
 
 open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
@@ -36,7 +37,10 @@ open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		createContentView(binding.modalFragmentContainer)?.let(binding.modalFragmentContainer::addView)
-		binding.modalFragmentHandle.setHandleBehavior(
+		ModalUtils.checkFlagValidity(flags = flags)
+		if (ModalUtils.isFullscreen(flags)) onFullScreenSet()
+		//TODO offer to customize handle with custom view (just ask for id?)
+		else binding.modalFragmentHandle.setHandleBehavior(
 			binding.root,
 			onDragRelease = ::onDragRelease,
 			onDraggedOut = ::onDraggedOut,
@@ -49,6 +53,14 @@ open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 
 	fun setOnDraggedOutListener(listener: (ModalFragment) -> Unit) {
 		draggedOutListener = listener
+	}
+
+	open fun onFullScreenSet() {
+		binding.modalFragmentHandle.isVisible = false
+	}
+
+	fun closeModal() {
+		binding.root.swipeOut(binding.root.height, 0f) { draggedOutListener?.invoke(this) }
 	}
 
 	private fun onDraggedOut() {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import me.portailler.florian.testanimation.databinding.ModalActivityBinding
 import me.portailler.florian.testanimation.databinding.MyModalFragmentBinding
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
@@ -70,6 +71,12 @@ class ModalActivity : AppCompatActivity() {
 		override fun createContentView(rootView: ViewGroup): View? {
 			_binding = MyModalFragmentBinding.inflate(LayoutInflater.from(rootView.context), rootView, false)
 			return _binding?.root
+		}
+
+		override fun onFullScreenSet() {
+			super.onFullScreenSet()
+			_binding?.closeButton?.isVisible = true
+			_binding?.closeButton?.setOnClickListener { closeModal() }
 		}
 	}
 

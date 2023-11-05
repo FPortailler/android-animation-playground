@@ -71,7 +71,6 @@ object ModalUtils {
 		onDragRelease: (DragLevel) -> Unit,
 		flags: Int = FLAG_FULL_HEIGHT
 	) {
-		checkFlagValidity(flags = flags)
 		var touchDown = false
 		var startY = 0f
 		var originalY = 0f
@@ -136,7 +135,7 @@ object ModalUtils {
 		return thresholds.reduce { acc, threshold -> if (abs(acc.heightRatio - swipePercent) < abs(threshold.heightRatio - swipePercent)) acc else threshold }
 	}
 
-	private fun View.swipeOut(
+	fun View.swipeOut(
 		originalHeight: Int,
 		originalY: Float,
 		animationDelay: Long = 300,
@@ -185,9 +184,11 @@ object ModalUtils {
 	}
 
 	@Throws(IllegalArgumentException::class)
-	private fun checkFlagValidity(flags: Int) {
+	fun checkFlagValidity(flags: Int) {
 		check(flags % 2 == 0 || flags == 1) { throw IllegalStateException("Incompatible flags : FLAG_FULL_SCREEN is not compatible with other flags") }
 	}
+
+	fun isFullscreen(flags: Int): Boolean = flags and FLAG_FULL_SCREEN == FLAG_FULL_SCREEN
 
 	enum class DragLevel(val heightRatio: Float) {
 		FULL_HEIGHT(FULL_HEIGHT_THRESHOLD),
