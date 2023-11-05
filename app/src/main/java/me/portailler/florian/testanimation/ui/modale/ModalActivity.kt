@@ -2,8 +2,15 @@ package me.portailler.florian.testanimation.ui.modale
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import me.portailler.florian.testanimation.databinding.ModalActivityBinding
+import me.portailler.florian.testanimation.databinding.MyModalFragmentBinding
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_HALF_HEIGHT
+import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_MINIMIZABLE
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.finishAsModal
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.replaceAsModal
 
@@ -19,7 +26,9 @@ class ModalActivity : AppCompatActivity() {
 	}
 
 	private lateinit var binding: ModalActivityBinding
-	private val modalFragment: ModalFragment by lazy { ModalFragment.newInstance() }
+	private val modalFragment: MyModalFragment by lazy {
+		MyModalFragment.newInstance()
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -41,6 +50,27 @@ class ModalActivity : AppCompatActivity() {
 	private fun openModalFragment() {
 		modalFragment.setOnDraggedOutListener { supportFragmentManager.beginTransaction().remove(it).commit() }
 		supportFragmentManager.replaceAsModal(binding.modalActivityFragmentContainer.id, modalFragment)
+	}
+
+	class MyModalFragment : ModalFragment() {
+
+		companion object {
+			fun newInstance(): MyModalFragment {
+				val args = Bundle()
+				val fragment = MyModalFragment()
+				fragment.arguments = args
+				return fragment
+			}
+		}
+
+		private var _binding: MyModalFragmentBinding? = null
+
+		override val flags: Int = ModalUtils.FLAG_FULL_HEIGHT or FLAG_HALF_HEIGHT or FLAG_MINIMIZABLE
+
+		override fun createContentView(rootView: ViewGroup): View? {
+			_binding = MyModalFragmentBinding.inflate(LayoutInflater.from(rootView.context), rootView, false)
+			return _binding?.root
+		}
 	}
 
 }

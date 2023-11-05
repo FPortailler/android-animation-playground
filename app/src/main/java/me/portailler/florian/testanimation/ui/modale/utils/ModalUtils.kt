@@ -2,12 +2,15 @@ package me.portailler.florian.testanimation.ui.modale.utils
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
+import android.util.IntProperty
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
@@ -60,7 +63,6 @@ object ModalUtils {
 
 	//TODO handle FLAG_FULL_SCREEN
 	//TODO add FLAG_WRAP_CONTENT (incompatible with the others)
-	//TODO compute height instead of translation ?
 	@SuppressLint("ClickableViewAccessibility")
 	@Throws(IllegalArgumentException::class)
 	fun View.setHandleBehavior(
@@ -72,13 +74,15 @@ object ModalUtils {
 		checkFlagValidity(flags = flags)
 		var touchDown = false
 		var startY = 0f
-		var originalYTranslation: Float = 0f
-		setOnTouchListener { v, event ->
+		var originalY = 0f
+		var originalHeight: Int = targetView.measuredHeight
+		setOnTouchListener { _, event ->
 			when (event.action) {
 				MotionEvent.ACTION_DOWN -> {
 					if (!touchDown) {
+						if (originalHeight == 0) originalHeight = targetView.height
 						startY = event.rawY
-						originalYTranslation = targetView.translationY
+						originalY = targetView.y
 					}
 					touchDown = true
 					true
@@ -87,7 +91,7 @@ object ModalUtils {
 				MotionEvent.ACTION_MOVE -> {
 					if (touchDown) {
 						val deltaY = event.rawY - startY
-						targetView.dragTo(originalYTranslation, y = deltaY, animationDelay = 0L)
+						targetView.dragTo(originalY = originalY, y = deltaY, originalHeight = originalHeight, animationDelay = 0L)
 					}
 					true
 				}
@@ -95,15 +99,15 @@ object ModalUtils {
 				MotionEvent.ACTION_UP -> {
 					touchDown = false
 					when (val nextDragLevel = targetView.computeDragLevel(event, flags)) {
-						DragLevel.GONE_HEIGHT -> targetView.swipeOut(originalYTranslation) {
+						DragLevel.GONE_HEIGHT -> targetView.swipeOut(originalHeight, originalY) {
 							onDraggedOut()
 							targetView.isVisible = false
-							targetView.dragTo(originalYTranslation, y = 0F, animationDelay = 0)
+							targetView.dragTo(originalY = originalY, y = 0F, originalHeight = originalHeight, animationDelay = 0)
 						}
 
 						else -> {
 							val y = (this.context as Activity).window.decorView.height.toFloat() * nextDragLevel.heightRatio
-							targetView.dragTo(originalYTranslation = 0f, y = y, animationDelay = 300, onAnimationCompleted = { onDragRelease(nextDragLevel) })
+							targetView.dragTo(originalY = 0f, y = y, originalHeight = originalHeight, animationDelay = 300, onAnimationCompleted = { onDragRelease(nextDragLevel) })
 						}
 					}
 					true
@@ -123,7 +127,7 @@ object ModalUtils {
 		val halfHeight: Boolean = flags and FLAG_HALF_HEIGHT == FLAG_HALF_HEIGHT
 		val lowHeight: Boolean = flags and FLAG_LOW_HEIGHT == FLAG_LOW_HEIGHT
 		val minimizedHeight: Boolean = flags and FLAG_MINIMIZABLE == FLAG_MINIMIZABLE
-		val swipePercent = event.rawY / bottom.toFloat()
+		val swipePercent = event.rawY / ((context as? Activity)?.window?.decorView?.height?.toFloat() ?: 1f)
 		val thresholds: MutableList<DragLevel> = mutableListOf(DragLevel.GONE_HEIGHT)
 		if (fullHeight) thresholds.add(DragLevel.FULL_HEIGHT)
 		if (halfHeight) thresholds.add(DragLevel.HALF_HEIGHT)
@@ -133,38 +137,51 @@ object ModalUtils {
 	}
 
 	private fun View.swipeOut(
-		originalYTranslation: Float,
+		originalHeight: Int,
+		originalY: Float,
 		animationDelay: Long = 300,
 		onAnimationCompleted: (() -> Unit)? = null
 	) = dragTo(
-		originalYTranslation = originalYTranslation,
+		originalY = originalY,
 		y = (this.context as Activity).window.decorView.height.toFloat(),
+		originalHeight = originalHeight,
 		animationDelay = animationDelay,
 		onAnimationCompleted = onAnimationCompleted
 	)
 
 
 	private fun View.dragTo(
-		originalYTranslation: Float,
+		originalY: Float,
 		y: Float,
+		originalHeight: Int,
 		animationDelay: Long,
 		onAnimationCompleted: (() -> Unit)? = null
 	) {
-		val animator = ObjectAnimator.ofFloat(
+		val squeezeAnimation = AnimatorSet()
+		val yAnimator = ObjectAnimator.ofFloat(
 			this,
-			View.TRANSLATION_Y,
-			y + originalYTranslation
+			View.Y,
+			y + originalY
 		)
-		animator.addListener(object : AnimatorListenerAdapter() {
+		val heightAnimator = ObjectAnimator.ofInt(
+			this,
+			HEIGHT,
+			originalHeight - y.toInt() - originalY.toInt()
+		)
+		squeezeAnimation.addListener(object : AnimatorListenerAdapter() {
 			override fun onAnimationEnd(animation: Animator) {
 				super.onAnimationEnd(animation)
-				animator.removeListener(this)
+				yAnimator.removeListener(this)
 				onAnimationCompleted?.invoke()
 			}
 		})
 
-		animator.duration = animationDelay
-		animator.start()
+		squeezeAnimation.duration = animationDelay
+		squeezeAnimation.playTogether(
+			yAnimator,
+			heightAnimator
+		)
+		squeezeAnimation.start()
 	}
 
 	@Throws(IllegalArgumentException::class)
@@ -180,4 +197,18 @@ object ModalUtils {
 		GONE_HEIGHT(1f)
 	}
 
+
+	private val HEIGHT by lazy {
+		object : IntProperty<View>("height") {
+			override fun get(view: View?): Int {
+				return view?.height ?: 0
+			}
+
+			override fun setValue(view: View?, value: Int) {
+				view?.layoutParams = (view?.layoutParams as? FrameLayout.LayoutParams)
+					?.apply { this.height = value }
+			}
+
+		}
+	}
 }

@@ -5,23 +5,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import me.portailler.florian.testanimation.databinding.ModalFragmentBinding
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_FULL_HEIGHT
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_HALF_HEIGHT
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_LOW_HEIGHT
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_MINIMIZABLE
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.setHandleBehavior
 import me.portailler.florian.testanimation.ui.shared.BaseFragment
 
 open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 	companion object {
 
-		fun newInstance(): ModalFragment = ModalFragment()
+		private const val ARG_FLAGS = "ModalFragment.ARG_FLAGS"
+		fun newInstance(
+			flags: Int = FLAG_FULL_HEIGHT
+		): ModalFragment = ModalFragment().apply {
+			arguments = bundleOf(
+				ARG_FLAGS to flags
+			)
+		}
 	}
 
 	private var draggedOutListener: ((ModalFragment) -> Unit)? = null
+	protected open val flags: Int = FLAG_FULL_HEIGHT
 
 	override fun buildViewBinding(inflater: LayoutInflater, container: ViewGroup?): ModalFragmentBinding {
 		return ModalFragmentBinding.inflate(inflater, container, false)
@@ -29,17 +35,17 @@ open class ModalFragment : BaseFragment<ModalFragmentBinding>() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		setContentView(binding.modalFragmentContainer)
+		createContentView(binding.modalFragmentContainer)?.let(binding.modalFragmentContainer::addView)
 		binding.modalFragmentHandle.setHandleBehavior(
 			binding.root,
 			onDragRelease = ::onDragRelease,
 			onDraggedOut = ::onDraggedOut,
-			flags = FLAG_FULL_HEIGHT or FLAG_HALF_HEIGHT or FLAG_LOW_HEIGHT or FLAG_MINIMIZABLE
+			flags = flags
 		)
 		binding.root.isVisible = true
 	}
 
-	open fun setContentView(rootView: View) = Unit
+	open fun createContentView(rootView: ViewGroup): View? = null
 
 	fun setOnDraggedOutListener(listener: (ModalFragment) -> Unit) {
 		draggedOutListener = listener
