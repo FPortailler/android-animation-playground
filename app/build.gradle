@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'me.portailler.florian.testanimation'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "me.portailler.florian.testanimation"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 

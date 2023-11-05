@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
+import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
 import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
 import me.portailler.florian.testanimation.ui.tinder.TinderActivity
@@ -19,6 +21,7 @@ import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivit
 class MenuActivity : AppCompatActivity() {
 
 	private lateinit var binding: MenuActivityBinding
+	private val shakeListener by lazy { ShakeListener(::onShake, durationTrigger = 300) }
 	private val adapter: MenuAdapter by lazy { MenuAdapter(onDestinationClicked = ::onDestinationClicked) }
 	private val destinations = listOf(
 		MenuDestination(
@@ -55,10 +58,20 @@ class MenuActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		binding.menuRecyclerView.adapter = adapter
 		adapter.replaceAll(destinations)
+		shakeListener.start(this)
+	}
+
+	override fun onDestroy() {
+		shakeListener.stop()
+		super.onDestroy()
 	}
 
 	private fun onDestinationClicked(destination: MenuDestination) {
 		startActivity(Intent(this, destination.activityClass))
+	}
+
+	private fun onShake() {
+		Snackbar.make(binding.root, "Shake detected. Shake on each screen to toggle dev options", Snackbar.LENGTH_SHORT).show()
 	}
 
 
