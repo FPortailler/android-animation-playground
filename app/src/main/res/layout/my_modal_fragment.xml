@@ -3,7 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <View
+        android:id="@+id/modalFragmentHandle"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/modal_top"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/closeButton"
@@ -26,6 +35,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/modalFragmentHandle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

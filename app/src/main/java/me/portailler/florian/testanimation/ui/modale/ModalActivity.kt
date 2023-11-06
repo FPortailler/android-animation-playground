@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import me.portailler.florian.testanimation.databinding.ModalActivityBinding
 import me.portailler.florian.testanimation.databinding.MyModalFragmentBinding
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_HALF_HEIGHT
-import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.FLAG_MINIMIZABLE
+import me.portailler.florian.testanimation.ui.modale.helper.ModalHelper
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.finishAsModal
 import me.portailler.florian.testanimation.ui.modale.utils.ModalUtils.replaceAsModal
+import me.portailler.florian.testanimation.ui.shared.BaseFragment
 
 class ModalActivity : AppCompatActivity() {
 
@@ -27,9 +26,6 @@ class ModalActivity : AppCompatActivity() {
 	}
 
 	private lateinit var binding: ModalActivityBinding
-	private val modalFragment: MyModalFragment by lazy {
-		MyModalFragment.newInstance()
-	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -49,35 +45,36 @@ class ModalActivity : AppCompatActivity() {
 	}
 
 	private fun openModalFragment() {
-		modalFragment.setOnDraggedOutListener { supportFragmentManager.beginTransaction().remove(it).commit() }
+		val modalFragment = MyModalFragment.newInstance()
+		modalFragment.onDraggedOutListener = { supportFragmentManager.beginTransaction().remove(this).commit() }
 		supportFragmentManager.replaceAsModal(binding.modalActivityFragmentContainer.id, modalFragment)
 	}
 
-	class MyModalFragment : ModalFragment() {
+	class MyModalFragment : BaseFragment<MyModalFragmentBinding>() {
 
 		companion object {
-			fun newInstance(): MyModalFragment {
-				val args = Bundle()
-				val fragment = MyModalFragment()
-				fragment.arguments = args
-				return fragment
-			}
+			fun newInstance(): MyModalFragment = MyModalFragment()
 		}
 
-		private var _binding: MyModalFragmentBinding? = null
+		var onDraggedOutListener: Fragment.() -> Unit = {}
 
-		override val flags: Int = ModalUtils.FLAG_FULL_HEIGHT or FLAG_HALF_HEIGHT or FLAG_MINIMIZABLE
-
-		override fun createContentView(rootView: ViewGroup): View? {
-			_binding = MyModalFragmentBinding.inflate(LayoutInflater.from(rootView.context), rootView, false)
-			return _binding?.root
+		private val modalHelper: ModalHelper<MyModalFragment> by lazy {
+			ModalHelper(
+				getHandle = { binding.modalFragmentHandle },
+				getFullscreeenCloseButton = { binding.closeButton },
+				onDraggedOut = { onDraggedOutListener(this) },
+			)
 		}
 
-		override fun onFullScreenSet() {
-			super.onFullScreenSet()
-			_binding?.closeButton?.isVisible = true
-			_binding?.closeButton?.setOnClickListener { closeModal() }
+		override fun buildViewBinding(inflater: LayoutInflater, container: ViewGroup?): MyModalFragmentBinding {
+			return MyModalFragmentBinding.inflate(layoutInflater, container, false)
+		}
+
+		override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+			super.onViewCreated(view, savedInstanceState)
+			modalHelper.fullHeight = true
+			modalHelper.midHeight = true
+			modalHelper.attachTo(fragment = this)
 		}
 	}
-
 }
