@@ -26,6 +26,16 @@ class ModalActivity : AppCompatActivity() {
 	}
 
 	private lateinit var binding: ModalActivityBinding
+	private val fullscreen: Boolean
+		get() = binding.modalActivityFullScreen.isChecked
+	private val fullHeight: Boolean
+		get() = binding.modalActivitySwitchFullHeight.isChecked
+	private val midHeight: Boolean
+		get() = binding.modalActivitySwitchMidHeight.isChecked
+	private val lowHeight: Boolean
+		get() = binding.modalActivitySwitchLowHeight.isChecked
+	private val minimizeEnabled: Boolean
+		get() = binding.modalActivitySwitchMinimize.isChecked
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -33,6 +43,7 @@ class ModalActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		binding.openModalActivityButton.setOnClickListener { openModalActivity() }
 		binding.openModalFragmentButton.setOnClickListener { openModalFragment() }
+
 	}
 
 	override fun onBackPressed() {
@@ -46,6 +57,12 @@ class ModalActivity : AppCompatActivity() {
 
 	private fun openModalFragment() {
 		val modalFragment = MyModalFragment.newInstance()
+		modalFragment.modalHelper.fullscreen = fullscreen
+		modalFragment.modalHelper.fullHeight = fullHeight
+		modalFragment.modalHelper.midHeight = midHeight
+		modalFragment.modalHelper.lowHeight = lowHeight
+		modalFragment.modalHelper.minimizeEnabled = minimizeEnabled
+
 		modalFragment.onDraggedOutListener = { supportFragmentManager.beginTransaction().remove(this).commit() }
 		supportFragmentManager.replaceAsModal(binding.modalActivityFragmentContainer.id, modalFragment)
 	}
@@ -58,7 +75,7 @@ class ModalActivity : AppCompatActivity() {
 
 		var onDraggedOutListener: Fragment.() -> Unit = {}
 
-		private val modalHelper: ModalHelper<MyModalFragment> by lazy {
+		val modalHelper: ModalHelper<MyModalFragment> by lazy {
 			ModalHelper(
 				getHandle = { binding.modalFragmentHandle },
 				getFullscreeenCloseButton = { binding.closeButton },
@@ -72,8 +89,6 @@ class ModalActivity : AppCompatActivity() {
 
 		override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 			super.onViewCreated(view, savedInstanceState)
-			modalHelper.fullHeight = true
-			modalHelper.midHeight = true
 			modalHelper.attachTo(fragment = this)
 		}
 	}

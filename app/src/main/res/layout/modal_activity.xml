@@ -16,21 +16,67 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/modalActivitySwitchPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/ModalTextView">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/modalActivityFullScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical"
+            android:text="Fullscreen"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/modalActivitySwitchFullHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Full height"
+            app:layout_constraintTop_toBottomOf="@id/modalActivityFullScreen" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/modalActivitySwitchMidHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mid height"
+            app:layout_constraintTop_toBottomOf="@id/modalActivitySwitchFullHeight" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/modalActivitySwitchLowHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Low height"
+            app:layout_constraintTop_toBottomOf="@id/modalActivitySwitchMidHeight" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/modalActivitySwitchMinimize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Minimizable"
+            app:layout_constraintTop_toBottomOf="@id/modalActivitySwitchLowHeight" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/openModalFragmentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="Open Modal Fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ModalTextView" />
+        app:layout_constraintTop_toBottomOf="@id/modalActivitySwitchPanel" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/openModalActivityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="Open Modal Activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
