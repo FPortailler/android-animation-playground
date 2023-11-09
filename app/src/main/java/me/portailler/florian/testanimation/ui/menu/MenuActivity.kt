@@ -11,6 +11,8 @@ import com.google.android.material.snackbar.Snackbar
 import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
+import me.portailler.florian.testanimation.ui.lottie.LottieActivity
+import me.portailler.florian.testanimation.ui.lottie.LottieComposeActivity
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
 import me.portailler.florian.testanimation.ui.modale.ModalActivity
 import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
@@ -54,6 +56,16 @@ class MenuActivity : AppCompatActivity() {
 			title = "Modal",
 			description = "An attempt to make iOS modal look and feel",
 			activityClass = ModalActivity::class.java
+		),
+		MenuDestination(
+			title = "Lottie",
+			description = "A lottie animation",
+			activityClass = LottieActivity::class.java
+		),
+		MenuDestination(
+			title = "Lottie Compose",
+			description = "A lottie animation in compose",
+			activityClass = LottieComposeActivity::class.java
 		)
 	)
 
