@@ -3,3 +3,40 @@
 ## [unreleased]
 
 - feat(Drag and Swipe): added singleTap event
+- fix(Drag and swipe): renamed `onSwipe` into `onSwipeStart`, and `onEnd` into `onSwipeEnd`. feat(Drag and swipe): `View.enableDragAndSwipe(onSwipeEnd:(direction: Int) -> Unit)` now provides the direction feat(Drag and swipe): changed signature of `DragAndSwipeAdapter.onEnd()` to `DragAndSwipeAdapter.onSwipeEnd(direction: Int, position: Int, item: T)`
+- feat(Lottie): tested lottie lib
+- feat(modal): Added switches to change modal configuration dynamically
+- feat(modal): Migrated modal behavior to a Helper (or delegate) class for composition instead of inheritance
+- feat(modal): Added modal full screen behavior
+- feat(modal): Added modal resize on drag (may be flaggable in the future)
+- feat(modal): Added modal fragment behavior with multiple steps
+- feat(modal): Added modal fragment and modal behavior for Activity
+- feat(detekt): applied detekt plugin on kotlin files
+- feat(gradle): dependencies update
+- feat(ShakeListener): Added ShakeListener
+- feat(XML): DragAndSwipeAdapter try shift stack effect
+- feat(XML): DismissAdapter like reddit app
+- feature(joystick): attempt to make a joystick (broken)
+- refacto(TinderCompose): simplified zIndex computation and enabled state
+- fix(TinderCompose): callbacks provides valid index
+- fix(TinderCompose): cards where stacked
+- refacto(TinderCompose): simplified code and extracted logic into a modifier
+- fix(TinderCompose): solved inconsistency on swipe out
+- fix(TinderCompose): reset animation was broken when not swiping out
+- feature(TinderCompose): added swipe out animation
+- feature(TinderCompose): added reset animation
+- feature(TinderCompose): added drag and tilt animation
+- feature(TinderCompose): added TinderComposeActivity, and TinderCard
+- feature(TinderActivity): added gradient effect
+- chore(MenuActivity): Renamed MainActivity.kt into SharedElementActivity and made MenuActivity the entrypoint of the app
+- fix(tinder): renamed TinderAdapter.kt into DragAndSwipeAdapter, and fixed relative coordinates issues
+- feature(tinder): created TinderAdapter
+- feature(tinder): created TinderAdapter
+- feature(tinder): added stick back animation
+- fix(tinder): handled backward compatibility
+- feature(tinder): added swipe out animation
+- feature(tinder): added draggable card
+- chore(): updated git ignore
+- feature(MenuActivity): entrypoint to access various tests
+- feature(): it works more or less
+- I need to see the differences
