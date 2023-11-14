@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +36,8 @@ class TinderActivity : AppCompatActivity() {
 		DragAndSwipeCardAdapter(
 			swipeThreshold = SWIPE_THRESHOLD,
 			onSwipeListener = ::onSwipe,
-			onSwipePercentUpdated = ::onSwipePercentUpdated
+			onSwipePercentUpdated = ::onSwipePercentUpdated,
+			onSingleTapListener = ::onSingleTap,
 		)
 	}
 
@@ -86,10 +88,16 @@ class TinderActivity : AppCompatActivity() {
 		binding.swipeZoneRight.fadeIn(rightAlpha, 0)
 	}
 
+	private fun onSingleTap(index: Int, item: TinderCardEntity) {
+		Log.d("TinderActivity", "onSingleTap: index = $index item = ${item.id}")
+		Toast.makeText(this, "onSingleTap: index = $index item = ${item.id}", Toast.LENGTH_SHORT).show()
+	}
+
 	private class DragAndSwipeCardAdapter(
 		override var swipeThreshold: Float,
 		private val onSwipeListener: (direction: Int, position: Int, item: TinderCardEntity) -> Unit,
-		private val onSwipePercentUpdated: (percent: Float) -> Unit = {}
+		private val onSwipePercentUpdated: (percent: Float) -> Unit = {},
+		private val onSingleTapListener: (index: Int, item: TinderCardEntity) -> Unit = { _, _ -> }
 	) : DragAndSwipeAdapter<TinderCardEntity>() {
 
 		companion object {
@@ -120,6 +128,8 @@ class TinderActivity : AppCompatActivity() {
 			data.removeAt(0)
 			notifyDataSetChanged()
 		}
+
+		override fun onSingleTap(index: Int, item: TinderCardEntity) = onSingleTapListener(index, item)
 
 	}
 

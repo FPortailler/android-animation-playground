@@ -36,46 +36,56 @@ object ViewUtils {
 		onSwipeStart: (direction: Int) -> Unit = {},
 		onSwipeEnd: (direction: Int) -> Unit = {},
 		onCancel: () -> Unit = {},
-		onSwipePercentUpdate: (percent: Float) -> Unit = { }
+		onSwipePercentUpdate: (percent: Float) -> Unit = { },
+		onSingleTap: () -> Unit = {},
 	) {
 		var touchedDown = false
+		val dragThreshold = 50f
+		var didDragStart = false
 		var startEvent: MotionEvent = MotionEvent.obtain(0, 0, 0, 0f, 0f, 0)
 		setOnTouchListener { v, event ->
 			when (event.action) {
 				MotionEvent.ACTION_DOWN -> {
 					if (!touchedDown) startEvent = MotionEvent.obtain(event)
 					touchedDown = true
+					didDragStart = false
 					true
 				}
 
 				MotionEvent.ACTION_MOVE -> {
 					if (touchedDown) {
 						val currentEvent = MotionEvent.obtain(event)
-						tilt(startEvent, currentEvent, emphasys = emphasis)
-						onSwipePercentUpdate(swipePercent(currentEvent))
+						if (startEvent.checkIsDraggedTo(currentEvent, dragThreshold)) {
+							didDragStart = true
+							tilt(startEvent, currentEvent, emphasys = emphasis)
+							onSwipePercentUpdate(swipePercent(currentEvent))
+						}
 					}
 					true
 				}
 
 				MotionEvent.ACTION_UP -> {
 					touchedDown = false
-					when (isSwipedOut(event, threshold)) {
-						SWIPED_LEFT -> {
-							moveOut(SWIPED_LEFT, startEvent, event, onSwipeEnd)
-							onSwipeStart(SWIPED_LEFT)
-						}
+					if (!didDragStart) onSingleTap()
+					else {
+						when (isSwipedOut(event, threshold)) {
+							SWIPED_LEFT -> {
+								moveOut(SWIPED_LEFT, startEvent, event, onSwipeEnd)
+								onSwipeStart(SWIPED_LEFT)
+							}
 
-						SWIPED_RIGHT -> {
-							moveOut(SWIPED_RIGHT, startEvent, event, onSwipeEnd)
-							onSwipeStart(SWIPED_RIGHT)
-						}
+							SWIPED_RIGHT -> {
+								moveOut(SWIPED_RIGHT, startEvent, event, onSwipeEnd)
+								onSwipeStart(SWIPED_RIGHT)
+							}
 
-						NOT_SWIPED -> {
-							onCancel()
-							v.reset()
+							NOT_SWIPED -> {
+								onCancel()
+								v.reset()
+							}
 						}
+						onSwipePercentUpdate(FIFTY_PERCENT)
 					}
-					onSwipePercentUpdate(FIFTY_PERCENT)
 					true
 				}
 
@@ -202,5 +212,10 @@ object ViewUtils {
 			val y = event.rawY
 			return@let x > it.left && x < it.right && y > it.top && y < it.bottom
 		} ?: false
+	}
+
+	private fun MotionEvent.checkIsDraggedTo(target: MotionEvent, threshold: Float): Boolean {
+		val distanceSquared: Float = (rawX - target.rawX) * (rawX - target.rawX) + (rawY - target.rawY) * (rawY - target.rawY)
+		return distanceSquared > threshold * threshold
 	}
 }

@@ -69,7 +69,8 @@ abstract class DragAndSwipeAdapter<T> {
 						onSwipeStart = { direction -> onSwipeStart(direction, index, t) },
 						onSwipeEnd = { direction -> onSwipeEnd(direction, index, t) },
 						onSwipePercentUpdate = ::onSwipePercentUpdate,
-						onCancel = ::onCancel
+						onCancel = ::onCancel,
+						onSingleTap = { onSingleTap(index, t) },
 					)
 				}
 			}
@@ -90,6 +91,8 @@ abstract class DragAndSwipeAdapter<T> {
 	abstract fun onSwipePercentUpdate(percent: Float)
 
 	abstract fun onCancel()
+
+	abstract fun onSingleTap(index: Int, item: T)
 
 	abstract class ViewHolder<T>(open val binding: ViewBinding) {
 
