@@ -94,6 +94,12 @@ abstract class DragAndSwipeAdapter<T> {
 
 	abstract fun onSingleTap(index: Int, item: T)
 
+	//Todo: add a method allowing to update views of the stack below the first one, while the drag is happening
+
+	//Todo: and maybe another method to initialize the stack transformation? Use a list of anchors like DraggableAnchors for compose?
+
+	//Todo: and maybe another other method to apply transition effect between swipeStart and SwipeEnd? Anchor would ease the work and its integration :3
+
 	abstract class ViewHolder<T>(open val binding: ViewBinding) {
 
 		abstract fun bind(item: T, position: Int)

@@ -146,6 +146,7 @@ object ViewUtils {
 		tiltAnimation.start()
 	}
 
+	//FixMe: memorize initial transformations in order to preserve them on the reset
 	private fun View.reset(duration: Long = 100) {
 		post {
 			val tiltAnimation = AnimatorSet()
