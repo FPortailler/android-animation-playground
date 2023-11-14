@@ -23,18 +23,18 @@ object ViewUtils {
 	 *
 	 * @param emphasis a factor to exaggerate the animation
 	 * @param threshold the percentage of the screen width to trigger the swipe
-	 * @param onSwipe callback when the card is swiped [SWIPED_LEFT] or [SWIPED_RIGHT]
-	 * @param onEnd callback when the card is swiped and the animation is finished
+	 * @param onSwipeStart callback when the card is swiped [SWIPED_LEFT] or [SWIPED_RIGHT]
+	 * @param onSwipeEnd callback when the card is swiped and the animation is finished
 	 * (allows to update the view before it enters the screen again)
-	 * @param onCancel callback when the card is not swiped enough to trigger [onSwipe]
+	 * @param onCancel callback when the card is not swiped enough to trigger [onSwipeStart]
 	 * @param onSwipePercentUpdate callback when the card is swiped, gives the percentage of the screen width swiped
 	 */
 	@SuppressLint("ClickableViewAccessibility")
 	fun View.enableDragAndSwipe(
 		emphasis: Float = 1f,
 		threshold: Float = 0.15f,
-		onSwipe: (direction: Int) -> Unit = {},
-		onEnd: () -> Unit = {},
+		onSwipeStart: (direction: Int) -> Unit = {},
+		onSwipeEnd: (direction: Int) -> Unit = {},
 		onCancel: () -> Unit = {},
 		onSwipePercentUpdate: (percent: Float) -> Unit = { }
 	) {
@@ -61,13 +61,13 @@ object ViewUtils {
 					touchedDown = false
 					when (isSwipedOut(event, threshold)) {
 						SWIPED_LEFT -> {
-							moveOut(SWIPED_LEFT, startEvent, event, onEnd)
-							onSwipe(SWIPED_LEFT)
+							moveOut(SWIPED_LEFT, startEvent, event, onSwipeEnd)
+							onSwipeStart(SWIPED_LEFT)
 						}
 
 						SWIPED_RIGHT -> {
-							moveOut(SWIPED_RIGHT, startEvent, event, onEnd)
-							onSwipe(SWIPED_RIGHT)
+							moveOut(SWIPED_RIGHT, startEvent, event, onSwipeEnd)
+							onSwipeStart(SWIPED_RIGHT)
 						}
 
 						NOT_SWIPED -> {
@@ -162,7 +162,7 @@ object ViewUtils {
 		}
 	}
 
-	private fun View.moveOut(direction: Int, startEvent: MotionEvent, event: MotionEvent, onEnd: () -> Unit) {
+	private fun View.moveOut(direction: Int, startEvent: MotionEvent, event: MotionEvent, onSwipeEnd: (direction: Int) -> Unit) {
 		val dx = direction * (this.context as Activity).window.decorView.width.toFloat()
 		val targetY = startEvent.targetY(event, dx)
 		val xyAnimation = AnimatorSet()
@@ -184,7 +184,7 @@ object ViewUtils {
 		xyAnimation.addListener(object : AnimatorListenerAdapter() {
 			override fun onAnimationEnd(animation: Animator) {
 				animation.removeListener(this)
-				onEnd()
+				onSwipeEnd(direction)
 				reset(0)
 			}
 		})

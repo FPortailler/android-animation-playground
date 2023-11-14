@@ -110,11 +110,16 @@ class TinderActivity : AppCompatActivity() {
 
 		override fun getItemViewType(position: Int): Int = 0
 
-		override fun onSwipe(direction: Int, position: Int, item: TinderCardEntity) = onSwipeListener(direction, position, item)
+		override fun onSwipeStart(direction: Int, position: Int, item: TinderCardEntity) = onSwipeListener(direction, position, item)
 
 		override fun onCancel() = Unit
 
 		override fun onSwipePercentUpdate(percent: Float) = onSwipePercentUpdated(percent)
+
+		override fun onSwipeEnd(direction: Int, position: Int, item: TinderCardEntity) {
+			data.removeAt(0)
+			notifyDataSetChanged()
+		}
 
 	}
 

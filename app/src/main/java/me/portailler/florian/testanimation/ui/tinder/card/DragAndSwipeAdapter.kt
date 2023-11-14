@@ -66,11 +66,8 @@ abstract class DragAndSwipeAdapter<T> {
 					if (index == 0) binding.root.enableDragAndSwipe(
 						emphasis = emphasis,
 						threshold = swipeThreshold,
-						onSwipe = { direction -> onSwipe(direction, index, t) },
-						onEnd = {
-							data.removeAt(0)
-							notifyDataSetChanged()
-						},
+						onSwipeStart = { direction -> onSwipeStart(direction, index, t) },
+						onSwipeEnd = { direction -> onSwipeEnd(direction, index, t) },
 						onSwipePercentUpdate = ::onSwipePercentUpdate,
 						onCancel = ::onCancel
 					)
@@ -86,7 +83,9 @@ abstract class DragAndSwipeAdapter<T> {
 
 	abstract fun getItemViewType(position: Int): Int
 
-	abstract fun onSwipe(direction: Int, position: Int, item: T)
+	abstract fun onSwipeStart(direction: Int, position: Int, item: T)
+
+	abstract fun onSwipeEnd(direction: Int, position: Int, item: T)
 
 	abstract fun onSwipePercentUpdate(percent: Float)
 
