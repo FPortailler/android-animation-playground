@@ -15,6 +15,7 @@ object ViewUtils {
 	private const val FIFTY_PERCENT = 0.5f
 	private const val NOT_SWIPED = 0
 	private const val PIVOT_POINT_VERTICAL_FACTOR = 1.25f
+	private const val DEFAULT_DRAG_THRESHOLD = 50f
 	const val SWIPED_LEFT = -1
 	const val SWIPED_RIGHT = 1
 
@@ -28,6 +29,8 @@ object ViewUtils {
 	 * (allows to update the view before it enters the screen again)
 	 * @param onCancel callback when the card is not swiped enough to trigger [onSwipeStart]
 	 * @param onSwipePercentUpdate callback when the card is swiped, gives the percentage of the screen width swiped
+	 * @param onSingleTap callback when the card is tapped
+	 * @param dragThreshold the threshold in pixels to trigger the drag (does not scale with accessibility settings)
 	 */
 	@SuppressLint("ClickableViewAccessibility")
 	fun View.enableDragAndSwipe(
@@ -38,9 +41,9 @@ object ViewUtils {
 		onCancel: () -> Unit = {},
 		onSwipePercentUpdate: (percent: Float) -> Unit = { },
 		onSingleTap: () -> Unit = {},
+		dragThreshold: Float = DEFAULT_DRAG_THRESHOLD,
 	) {
 		var touchedDown = false
-		val dragThreshold = 50f
 		var didDragStart = false
 		var startEvent: MotionEvent = MotionEvent.obtain(0, 0, 0, 0f, 0f, 0)
 		setOnTouchListener { v, event ->

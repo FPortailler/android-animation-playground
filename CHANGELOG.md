@@ -2,6 +2,7 @@
 
 ## [unreleased]
 
+- feat(drag and swipe): documented new singleTap event
 - feat(Drag and Swipe): added singleTap event
 - fix(Drag and swipe): renamed `onSwipe` into `onSwipeStart`, and `onEnd` into `onSwipeEnd`. feat(Drag and swipe): `View.enableDragAndSwipe(onSwipeEnd:(direction: Int) -> Unit)` now provides the direction feat(Drag and swipe): changed signature of `DragAndSwipeAdapter.onEnd()` to `DragAndSwipeAdapter.onSwipeEnd(direction: Int, position: Int, item: T)`
 - feat(Lottie): tested lottie lib
