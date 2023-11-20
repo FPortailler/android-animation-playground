@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import me.portailler.florian.testanimation.core.navigation.UrlRouter
 import me.portailler.florian.testanimation.databinding.MenuActivityBinding
 import me.portailler.florian.testanimation.databinding.MenuCellBinding
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
@@ -17,6 +18,7 @@ import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
 import me.portailler.florian.testanimation.ui.modale.ModalActivity
 import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
+import me.portailler.florian.testanimation.ui.shortcuts.ShortcutActivity
 import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
 import me.portailler.florian.testanimation.ui.tinder.TinderActivity
 import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivity
@@ -66,7 +68,13 @@ class MenuActivity : AppCompatActivity() {
 			title = "Lottie Compose",
 			description = "A lottie animation in compose",
 			activityClass = LottieComposeActivity::class.java
+		),
+		MenuDestination(
+			title = "Shortcut",
+			description = "A shortcut to open the app",
+			activityClass = ShortcutActivity::class.java
 		)
+
 	)
 
 
@@ -77,11 +85,16 @@ class MenuActivity : AppCompatActivity() {
 		binding.menuRecyclerView.adapter = adapter
 		adapter.replaceAll(destinations)
 		shakeListener.start(this)
+		checkIntent()
 	}
 
 	override fun onDestroy() {
 		shakeListener.stop()
 		super.onDestroy()
+	}
+
+	private fun checkIntent() {
+		UrlRouter.handleUri(this, intent.data)
 	}
 
 	private fun onDestinationClicked(destination: MenuDestination) {
