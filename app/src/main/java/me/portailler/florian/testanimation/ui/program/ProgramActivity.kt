@@ -1,15 +1,13 @@
 package me.portailler.florian.testanimation.ui.program
 
 import android.os.Bundle
-import android.support.annotation.ColorRes
-import android.util.Log
 import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import me.portailler.florian.testanimation.R
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import me.portailler.florian.testanimation.databinding.ProgramActivityBinding
 import me.portailler.florian.testanimation.databinding.ProgramCellBinding
-import me.portailler.florian.testanimation.ui.program.logic.ProgramEntity
+import me.portailler.florian.testanimation.databinding.ProgramChannelHeaderCellBinding
 import me.portailler.florian.testanimation.ui.program.logic.ProgramManager
 import me.portailler.florian.testanimation.ui.program.logic.ProgramManager.HALF_HOUR
 import kotlin.math.max
@@ -32,41 +30,39 @@ class ProgramActivity : AppCompatActivity() {
 
 
 	private fun loadProgram() {
-		ProgramManager.programs.groupBy { it.channel }
-			.forEach { (channel, programs) ->
-				val row = TableRow(this)
-				row.id = channel.ordinal
-				row.layoutParams = TableRow.LayoutParams(
-					TableRow.LayoutParams.MATCH_PARENT,
-					TableRow.LayoutParams.WRAP_CONTENT
-				)
-				@ColorRes val channelColor: Int = when (channel) {
-					ProgramEntity.Channel.TF1 -> R.color.tf1
-					ProgramEntity.Channel.FRANCE_2 -> R.color.france_2
-					ProgramEntity.Channel.FRANCE_3 -> R.color.france_3
-					ProgramEntity.Channel.FRANCE_5 -> R.color.france_5
-					ProgramEntity.Channel.FRANCE_O -> R.color.france_o
-
-				}
-
-				programs.sortedBy { program ->
-					program.startTime
-				}.forEach { program ->
-					val programCellBinding = ProgramCellBinding.inflate(layoutInflater)
-					programCellBinding.programName.text = program.title
-					programCellBinding.programCell.setBackgroundColor(ContextCompat.getColor(this, channelColor))
-					val layoutSpan: Long = max(1, (program.endTime - program.startTime) / TIME_STEP)
-					programCellBinding.root.layoutParams = TableRow.LayoutParams(
+		lifecycleScope.launch {
+			binding.programChannelList.removeAllViews()
+			ProgramManager.programs
+				.sortedBy { it.channel }
+				.groupBy { it.channel }
+				.forEach { (channel, programs) ->
+					val row = TableRow(this@ProgramActivity)
+					row.layoutParams = TableRow.LayoutParams(
 						TableRow.LayoutParams.MATCH_PARENT,
-						TableRow.LayoutParams.WRAP_CONTENT,
-					).apply {
-						this.span = layoutSpan.toInt()
-						Log.d("ProgramActivity", "layoutSpan: ${layoutSpan.toInt()} for program ${program.title}")
-					}
-					row.addView(programCellBinding.root)
-				}
-				binding.tableLayout.addView(row)
+						TableRow.LayoutParams.WRAP_CONTENT
+					)
 
-			}
+					val channelCellBinding = ProgramChannelHeaderCellBinding.inflate(layoutInflater)
+					channelCellBinding.programChannelHeaderCellName.text = "Ch $channel"
+					binding.programChannelList.addView(channelCellBinding.root)
+
+
+					programs.sortedBy { program ->
+						program.startTime
+					}.forEach { program ->
+						val programCellBinding = ProgramCellBinding.inflate(layoutInflater)
+						programCellBinding.programName.text = program.title
+						// Note: we would be able to use a RecyclerView with a GridLayoutManager
+						val layoutSpan: Long = max(1, (program.endTime - program.startTime) / TIME_STEP)
+						programCellBinding.root.layoutParams = TableRow.LayoutParams(
+							TableRow.LayoutParams.MATCH_PARENT,
+							TableRow.LayoutParams.WRAP_CONTENT
+						).apply { this.span = layoutSpan.toInt() }
+						row.addView(programCellBinding.root)
+					}
+					binding.tableLayout.addView(row)
+
+				}
+		}
 	}
 }
