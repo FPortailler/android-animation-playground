@@ -64,6 +64,10 @@
         <activity
             android:name=".ui.shortcuts.ShortcutActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ui.program.ProgramActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

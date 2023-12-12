@@ -5,4 +5,9 @@
 
     <color name="mockUpBackground">#BCBCFF</color>
     <color name="articleBodyColor">#252423</color>
+    <color name="tf1">#FF0000</color>
+    <color name="france_2">#00FF00</color>
+    <color name="france_3">#0000FF</color>
+    <color name="france_o">#FFFF00</color>
+    <color name="france_5">#00FFFF</color>
 </resources>
