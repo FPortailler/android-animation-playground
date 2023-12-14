@@ -16,6 +16,7 @@ import me.portailler.florian.testanimation.ui.lottie.LottieActivity
 import me.portailler.florian.testanimation.ui.lottie.LottieComposeActivity
 import me.portailler.florian.testanimation.ui.menu.state.MenuDestination
 import me.portailler.florian.testanimation.ui.modale.ModalActivity
+import me.portailler.florian.testanimation.ui.program.OptimizedProgramActivity
 import me.portailler.florian.testanimation.ui.program.ProgramActivity
 import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
@@ -80,6 +81,11 @@ class MenuActivity : AppCompatActivity() {
 			description = "A program schedule",
 			activityClass = ProgramActivity::class.java
 		),
+		MenuDestination(
+			title = "Program Optimized",
+			description = "A program schedule with a RecyclerView",
+			activityClass = OptimizedProgramActivity::class.java
+		)
 	)
 
 

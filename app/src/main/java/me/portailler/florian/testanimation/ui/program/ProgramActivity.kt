@@ -10,6 +10,7 @@ import me.portailler.florian.testanimation.databinding.ProgramCellBinding
 import me.portailler.florian.testanimation.databinding.ProgramChannelHeaderCellBinding
 import me.portailler.florian.testanimation.ui.program.logic.ProgramManager
 import me.portailler.florian.testanimation.ui.program.logic.ProgramManager.HALF_HOUR
+import me.portailler.florian.testanimation.ui.program.logic.ProgramManager.getSpan
 import kotlin.math.max
 
 class ProgramActivity : AppCompatActivity() {
@@ -53,7 +54,7 @@ class ProgramActivity : AppCompatActivity() {
 						val programCellBinding = ProgramCellBinding.inflate(layoutInflater)
 						programCellBinding.programName.text = program.title
 						// Note: we would be able to use a RecyclerView with a GridLayoutManager
-						val layoutSpan: Long = max(1, (program.endTime - program.startTime) / TIME_STEP)
+						val layoutSpan: Long = program.getSpan()
 						programCellBinding.root.layoutParams = TableRow.LayoutParams(
 							TableRow.LayoutParams.MATCH_PARENT,
 							TableRow.LayoutParams.WRAP_CONTENT

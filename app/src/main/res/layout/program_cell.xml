@@ -24,6 +24,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="8dp"
+            android:maxLength="15"
             android:textColor="@color/white"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
