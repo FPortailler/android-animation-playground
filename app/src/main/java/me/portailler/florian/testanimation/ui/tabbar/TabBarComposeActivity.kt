@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,9 +51,57 @@ class TabBarComposeActivity : ComponentActivity() {
 
 				Column(
 					modifier = Modifier
-						.fillMaxSize(),
+						.fillMaxSize()
+						.background(
+							brush = Brush.verticalGradient(
+								0f to Color(0xFF333333),
+								1f to Color(0xFFCCCCCC)
+							)
+						),
 					verticalArrangement = Arrangement.Bottom,
 				) {
+					//Tab bar with FAB
+					Box {
+						TabBar(
+							Modifier
+								.background(
+									color = backgroundTabBarColor,
+								),
+							itemCount = items.size,
+							selectedIndex = selectedItem,
+							indicator = { modifier ->
+								Surface(
+									modifier = modifier
+										.fillMaxHeight()
+										.padding(16.dp),
+									color = if (selectedItem != items.size / 2) selectionColor.copy(alpha = .2f) else Color.Transparent,
+									shape = RoundedCornerShape(16.dp),
+								) {}
+							}
+						) {
+							BuildTabBarItems(items, selectedItem, hideIndexForFab = items.size / 2, showLabel = false) { selectedItem = it }
+						}
+						Box(
+							modifier = Modifier
+								.size(50.dp)
+								.align(Alignment.Center)
+								.background(
+									color = selectionColor,
+									shape = CircleShape
+								)
+								.clickable {
+									selectedItem = items.size / 2
+								},
+						) {
+							Icon(
+								modifier = Modifier
+									.align(Alignment.Center)
+									.size(24.dp),
+								imageVector = items[items.size / 2].selectedIcon,
+								contentDescription = items[items.size / 2].label,
+							)
+						}
+					}
 					//Floating tab bar
 					Box(modifier = Modifier.padding(16.dp)) {
 
@@ -74,6 +124,55 @@ class TabBarComposeActivity : ComponentActivity() {
 							}
 						) {
 							BuildTabBarItems(items, selectedItem, showLabel = false) { selectedItem = it }
+						}
+					}
+					//Tab bar with higher fab
+					Box {
+						TabBar(
+							Modifier
+								.align(Alignment.BottomStart)
+								.background(
+									color = backgroundTabBarColor,
+								),
+							itemCount = items.size,
+							selectedIndex = selectedItem,
+							indicator = { modifier ->
+								Surface(
+									modifier = modifier
+										.fillMaxHeight()
+										.padding(16.dp),
+									color = if (selectedItem != items.size / 2) selectionColor.copy(alpha = .2f) else Color.Transparent,
+									shape = RoundedCornerShape(16.dp),
+								) {}
+							}
+						) {
+							BuildTabBarItems(items, selectedItem, hideIndexForFab = items.size / 2, showLabel = false) { selectedItem = it }
+						}
+						Box(
+							modifier = Modifier
+								.padding(bottom = 8.dp)
+								.align(Alignment.TopCenter)
+								.size(82.dp)
+								.background(
+									color = backgroundTabBarColor,
+									shape = CircleShape
+								)
+								.padding(16.dp)
+								.background(
+									color = selectionColor,
+									shape = CircleShape
+								)
+								.clickable {
+									selectedItem = items.size / 2
+								},
+						) {
+							Icon(
+								modifier = Modifier
+									.align(Alignment.Center)
+									.size(24.dp),
+								imageVector = items[items.size / 2].selectedIcon,
+								contentDescription = items[items.size / 2].label,
+							)
 						}
 					}
 					// Top Line indicator
@@ -159,7 +258,13 @@ class TabBarComposeActivity : ComponentActivity() {
 
 
 	@Composable
-	private fun RowScope.BuildTabBarItems(items: List<TabBarItem>, selectedIndex: Int, showLabel: Boolean = true, onClick: (Int) -> Unit) {
+	private fun RowScope.BuildTabBarItems(
+		items: List<TabBarItem>,
+		selectedIndex: Int,
+		hideIndexForFab: Int? = null,
+		showLabel: Boolean = true,
+		onClick: (Int) -> Unit
+	) {
 		items.forEachIndexed { index, item ->
 			NavigationBarItem(
 				modifier = Modifier
@@ -167,12 +272,28 @@ class TabBarComposeActivity : ComponentActivity() {
 					.background(color = Color.Transparent),
 				icon = {
 					Icon(
-						imageVector = if (selectedIndex == index) item.selectedIcon else item.icon,
+						imageVector = when (selectedIndex) {
+							index -> item.selectedIcon
+							else -> item.icon
+						},
 						item.label,
-						tint = if (selectedIndex == index) selectionColor else unselectedColor
+						tint = when {
+							hideIndexForFab != null && hideIndexForFab == index -> Color.Transparent
+							selectedIndex == index -> Color.White
+							else -> unselectedColor
+						}
 					)
 				},
-				label = { if (item.label != null) Text(item.label, color = if (selectedIndex == index) selectionColor else unselectedColor) },
+				label = {
+					if (item.label != null) Text(
+						item.label,
+						color = when {
+							hideIndexForFab != null && hideIndexForFab == index -> Color.Transparent
+							selectedIndex == index -> Color.White
+							else -> unselectedColor
+						}
+					)
+				},
 				alwaysShowLabel = showLabel && item.label != null,
 				selected = false,
 				onClick = { onClick(index) },
