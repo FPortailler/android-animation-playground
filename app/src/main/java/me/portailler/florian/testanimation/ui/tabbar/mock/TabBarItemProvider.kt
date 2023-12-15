@@ -15,31 +15,33 @@ import me.portailler.florian.testanimation.ui.tabbar.state.TabBarItem
 
 object TabBarItemProvider {
 
-	val items = listOf(
-		TabBarItem(
-			icon = Icons.Outlined.Home,
-			selectedIcon = Icons.Filled.Home,
-			label = "Home",
-		),
-		TabBarItem(
-			icon = Icons.Outlined.FavoriteBorder,
-			selectedIcon = Icons.Filled.Favorite,
-			label = "Favorite",
-		),
-		TabBarItem(
-			icon = Icons.Outlined.Search,
-			selectedIcon = Icons.Filled.Search,
-			label = "Search",
-		),
-		TabBarItem(
-			icon = Icons.Outlined.Settings,
-			selectedIcon = Icons.Filled.Settings,
-			label = "Settings",
-		),
-		TabBarItem(
-			icon = Icons.Outlined.AccountCircle,
-			selectedIcon = Icons.Filled.AccountCircle,
-			label = "Profile",
-		),
-	)
+	val items by lazy {
+		listOf(
+			TabBarItem(
+				icon = Icons.Outlined.Home,
+				selectedIcon = Icons.Filled.Home,
+				label = "Home",
+			),
+			TabBarItem(
+				icon = Icons.Outlined.FavoriteBorder,
+				selectedIcon = Icons.Filled.Favorite,
+				label = "Favorite",
+			),
+			TabBarItem(
+				icon = Icons.Outlined.Search,
+				selectedIcon = Icons.Filled.Search,
+				label = "Search",
+			),
+			TabBarItem(
+				icon = Icons.Outlined.Settings,
+				selectedIcon = Icons.Filled.Settings,
+				label = "Settings",
+			),
+			TabBarItem(
+				icon = Icons.Outlined.AccountCircle,
+				selectedIcon = Icons.Filled.AccountCircle,
+				label = "Profile",
+			),
+		)
+	}
 }

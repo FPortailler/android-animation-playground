@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- feat(App icon): change app icon dynamically
 - feat(Tab bar): build custom tab bar Composable
 - feat(shortcut): Added `ShortcutActivity` to test application shortcuts on smartphone home screen
 - feat(drag and swipe): documented new singleTap event
