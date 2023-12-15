@@ -22,6 +22,7 @@ import me.portailler.florian.testanimation.ui.shared.shake.ShakeListener
 import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
 import me.portailler.florian.testanimation.ui.shortcuts.ShortcutActivity
 import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
+import me.portailler.florian.testanimation.ui.tabbar.TabBarComposeActivity
 import me.portailler.florian.testanimation.ui.tinder.TinderActivity
 import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivity
 
@@ -85,6 +86,11 @@ class MenuActivity : AppCompatActivity() {
 			title = "Program Optimized",
 			description = "A program schedule with a RecyclerView",
 			activityClass = OptimizedProgramActivity::class.java
+		),
+		MenuDestination(
+			title = "Tab bar",
+			description = "A highly customizable tab bar in compose",
+			activityClass = TabBarComposeActivity::class.java
 		)
 	)
 
