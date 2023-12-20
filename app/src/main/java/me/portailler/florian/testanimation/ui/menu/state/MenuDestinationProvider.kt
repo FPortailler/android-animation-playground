@@ -1,6 +1,7 @@
 package me.portailler.florian.testanimation.ui.menu.state
 
 import me.portailler.florian.testanimation.ui.changeicon.ChangeIconActivity
+import me.portailler.florian.testanimation.ui.designs.DesignHomeActivity
 import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
 import me.portailler.florian.testanimation.ui.lottie.LottieActivity
 import me.portailler.florian.testanimation.ui.lottie.LottieComposeActivity
@@ -17,6 +18,11 @@ import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivit
 object MenuDestinationProvider {
 	val items by lazy {
 		listOf(
+			MenuDestination(
+				title = "Designs",
+				description = "A sub page of random designs",
+				activityClass = DesignHomeActivity::class.java
+			),
 			MenuDestination(
 				title = "Tinder",
 				description = "Swipe cards",

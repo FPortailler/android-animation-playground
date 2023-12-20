@@ -83,6 +83,10 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
+    // Voyager
+    // Navigator
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
+
     // Leak canary
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
 }

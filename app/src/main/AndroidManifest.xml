@@ -71,6 +71,9 @@
         <activity
             android:name=".ui.changeicon.ChangeIconActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.designs.DesignHomeActivity"
+            android:exported="false" />
 
         <!--   Alias for icons     -->
         <activity-alias
