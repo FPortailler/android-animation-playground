@@ -74,7 +74,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.lifecycle:lifecycle-runtime-compose")
     // Android Studio Preview support
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -87,6 +87,9 @@ dependencies {
     // Navigator
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
 
+    // Squircle shape
+    implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
+
     // Leak canary
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 }
