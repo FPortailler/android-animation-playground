@@ -10,8 +10,17 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = java.net.URI("https://jitpack.io") }
+    }
+
+    versionCatalogs {
+        create("shared") {
+            from(files("./shared.versions.toml"))
+        }
+        create("appLibs") {
+            from(files("./app/app.versions.toml"))
+        }
     }
 }
 rootProject.name = "testAnimation"
-include ':app'
+include(":app")

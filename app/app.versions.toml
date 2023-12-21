@@ -1,0 +1,90 @@
+#     implementation 'androidx.core:core-ktx:1.12.0'
+#    implementation 'androidx.appcompat:appcompat:1.6.1'
+#    implementation 'com.google.android.material:material:1.10.0'
+#    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+#    implementation "androidx.fragment:fragment-ktx:1.6.2"
+#    implementation 'com.thedeanda:lorem:2.1'
+#    testImplementation 'junit:junit:4.13.2'
+#    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+#    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+#
+#    // Image
+#    implementation("com.squareup.picasso:picasso:2.71828")
+#    implementation("jp.wasabeef:picasso-transformations:2.4.0")
+#    implementation("io.coil-kt:coil:2.4.0")
+#    implementation("io.coil-kt:coil-svg:2.2.2")
+#
+#    // Compose
+#    def composeBom = platform("androidx.compose:compose-bom:2023.05.01")
+#    implementation(composeBom)
+#    androidTestImplementation(composeBom)
+#    // Material Design 3
+#    implementation("androidx.compose.material3:material3")
+#    implementation("androidx.lifecycle:lifecycle-runtime-compose")
+#    // Android Studio Preview support
+#    implementation("androidx.activity:activity-compose:1.8.2")
+#    implementation("androidx.compose.ui:ui-tooling-preview")
+#    debugImplementation("androidx.compose.ui:ui-tooling")
+#    implementation("io.coil-kt:coil-compose:2.4.0")
+#
+#    //lottie
+#    implementation("com.airbnb.android:lottie:6.1.0")
+#    implementation("com.airbnb.android:lottie-compose:6.1.0")
+#
+#    // Voyager
+#    // Navigator
+#    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
+#
+#    // Squircle shape
+#    implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
+#
+#    // Leak canary
+#    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
+
+[versions]
+androidx-core = "1.12.0"
+androidx-appcompat = "1.6.1"
+com-google-android-material = "1.11.0"
+androidx-constraintlayout = "2.1.4"
+androidx-fragment = "1.6.2"
+com-thedeanda-lorem = "2.1"
+junit = "4.13.2"
+androidx-test-ext = "1.1.5"
+androidx-test-espresso = "3.5.1"
+com-squareup-picasso = "2.71828"
+jp-wasabeef-picasso-transformations = "2.4.0"
+coil = "2.4.0"
+coil-svg = "2.2.2"
+androidx-compose-bom = "2023.10.01"
+compose-material = "1.1.2"
+lottie = "6.1.0"
+voyager-navigator = "1.0.0"
+squircle = "v1.0.0"
+leakcanary = "2.12"
+
+[libraries]
+core-ktx = {group = "androidx.core", name = "core-ktx", version.ref = "androidx-core"}
+appcompat = {group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat"}
+material = {group = "com.google.android.material", name = "material", version.ref = "com-google-android-material"}
+constraintlayout = {group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout"}
+fragment-ktx = {group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment"}
+lorem = {group = "com.thedeanda", name = "lorem", version.ref = "com-thedeanda-lorem"}
+junit = {group = "junit", name = "junit", version.ref = "junit"}
+androidTestExt = {group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext"}
+androidTestEspresso = {group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso"}
+picasso = {group = "com.squareup.picasso", name = "picasso", version.ref = "com-squareup-picasso"}
+picassoTransformations = {group = "jp.wasabeef", name = "picasso-transformations", version.ref = "jp-wasabeef-picasso-transformations"}
+coil = {group = "io.coil-kt", name = "coil", version.ref = "coil"}
+coilSvg = {group = "io.coil-kt", name = "coil-svg", version.ref = "coil-svg"}
+composeBom = {group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom"}
+material3 = {group = "androidx.compose.material3", name = "material3", version.ref = "compose-material"}
+lifecycleRuntimeCompose = {group = "androidx.lifecycle", name = "lifecycle-runtime-compose"}
+activityCompose = {group = "androidx.activity", name = "activity-compose"}
+uiToolingPreview = {group = "androidx.compose.ui", name = "ui-tooling-preview"}
+uiTooling = {group = "androidx.compose.ui", name = "ui-tooling"}
+coilCompose = {group = "io.coil-kt", name = "coil-compose",  version.ref = "coil"}
+lottie = {group = "com.airbnb.android", name = "lottie", version.ref = "lottie"}
+lottieCompose = {group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie"}
+voyagerNavigator = {group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager-navigator"}
+squircleShape = {group = "com.github.racra", name = "smooth-corner-rect-android-compose", version.ref = "squircle"}
+leakcanary = {group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary"}

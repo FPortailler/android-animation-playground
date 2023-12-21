@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- feat(gradle): migration to Kotlin DSL and version Catalog
 - feat(Squircle): added squircle shape dependency
 - feat(App icon): change app icon dynamically
 - feat(Tab bar): build custom tab bar Composable
