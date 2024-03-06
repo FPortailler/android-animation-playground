@@ -5,8 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import me.portailler.florian.testanimation.ui.sharedelement.ArticleEntity
-import me.portailler.florian.testanimation.ui.sharedelement.MockArticleSource
+import me.portailler.florian.testanimation.ui.xml.sharedelement.ArticleEntity
+import me.portailler.florian.testanimation.ui.xml.sharedelement.MockArticleSource
 
 class ArticlesViewModel(application: Application) : AndroidViewModel(application) {
 

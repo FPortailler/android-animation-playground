@@ -27,52 +27,52 @@
         </activity>
 
         <activity
-            android:name=".ui.sharedelement.SharedElementActivity"
+            android:name=".ui.xml.sharedelement.SharedElementActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.tinder.TinderActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.tinderCompose.TinderComposeActivity"
+            android:name=".ui.xml.tinder.TinderActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.joystick.JoystickActivity"
+            android:name=".ui.compose.tinderCompose.TinderComposeActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.snackbar.SnackbarActivity"
+            android:name=".ui.compose.joystick.JoystickActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.modale.ModalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.lottie.LottieActivity"
+            android:name=".ui.xml.snackbar.SnackbarActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.lottie.LottieComposeActivity"
+            android:name=".ui.xml.modale.ModalActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.shortcuts.ShortcutActivity"
+            android:name=".ui.xml.lottie.LottieActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.compose.lottie.LottieComposeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.compose.shortcuts.ShortcutActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.program.ProgramActivity"
+            android:name=".ui.xml.program.ProgramActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.program.OptimizedProgramActivity"
+            android:name=".ui.xml.program.OptimizedProgramActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.tabbar.TabBarComposeActivity"
+            android:name=".ui.compose.tabbar.TabBarComposeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.changeicon.ChangeIconActivity"
+            android:name=".ui.compose.changeicon.ChangeIconActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.designs.DesignHomeActivity"
+            android:name=".ui.compose.designs.DesignHomeActivity"
             android:exported="false" />
 
         <!--   Alias for icons     -->

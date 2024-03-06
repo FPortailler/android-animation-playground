@@ -2,7 +2,7 @@ package me.portailler.florian.testanimation.core.navigation
 
 import android.content.Context
 import android.net.Uri
-import me.portailler.florian.testanimation.ui.shortcuts.ShortcutActivity
+import me.portailler.florian.testanimation.ui.compose.shortcuts.ShortcutActivity
 
 object UrlRouter {
 

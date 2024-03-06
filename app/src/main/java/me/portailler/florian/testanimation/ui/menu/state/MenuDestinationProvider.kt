@@ -1,19 +1,19 @@
 package me.portailler.florian.testanimation.ui.menu.state
 
-import me.portailler.florian.testanimation.ui.changeicon.ChangeIconActivity
-import me.portailler.florian.testanimation.ui.designs.DesignHomeActivity
-import me.portailler.florian.testanimation.ui.joystick.JoystickActivity
-import me.portailler.florian.testanimation.ui.lottie.LottieActivity
-import me.portailler.florian.testanimation.ui.lottie.LottieComposeActivity
-import me.portailler.florian.testanimation.ui.modale.ModalActivity
-import me.portailler.florian.testanimation.ui.program.OptimizedProgramActivity
-import me.portailler.florian.testanimation.ui.program.ProgramActivity
-import me.portailler.florian.testanimation.ui.sharedelement.SharedElementActivity
-import me.portailler.florian.testanimation.ui.shortcuts.ShortcutActivity
-import me.portailler.florian.testanimation.ui.snackbar.SnackbarActivity
-import me.portailler.florian.testanimation.ui.tabbar.TabBarComposeActivity
-import me.portailler.florian.testanimation.ui.tinder.TinderActivity
-import me.portailler.florian.testanimation.ui.tinderCompose.TinderComposeActivity
+import me.portailler.florian.testanimation.ui.compose.changeicon.ChangeIconActivity
+import me.portailler.florian.testanimation.ui.compose.designs.DesignHomeActivity
+import me.portailler.florian.testanimation.ui.compose.joystick.JoystickActivity
+import me.portailler.florian.testanimation.ui.xml.lottie.LottieActivity
+import me.portailler.florian.testanimation.ui.compose.lottie.LottieComposeActivity
+import me.portailler.florian.testanimation.ui.xml.modale.ModalActivity
+import me.portailler.florian.testanimation.ui.xml.program.OptimizedProgramActivity
+import me.portailler.florian.testanimation.ui.xml.program.ProgramActivity
+import me.portailler.florian.testanimation.ui.xml.sharedelement.SharedElementActivity
+import me.portailler.florian.testanimation.ui.compose.shortcuts.ShortcutActivity
+import me.portailler.florian.testanimation.ui.xml.snackbar.SnackbarActivity
+import me.portailler.florian.testanimation.ui.compose.tabbar.TabBarComposeActivity
+import me.portailler.florian.testanimation.ui.xml.tinder.TinderActivity
+import me.portailler.florian.testanimation.ui.compose.tinderCompose.TinderComposeActivity
 
 object MenuDestinationProvider {
 	val items by lazy {
