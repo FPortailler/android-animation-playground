@@ -53,46 +53,51 @@ android {
 
 dependencies {
 
-	implementation(appLibs.core.ktx.get())
-	implementation(appLibs.appcompat.get())
-	implementation(appLibs.material.get())
-	implementation(appLibs.constraintlayout.get())
-	implementation(appLibs.fragment.ktx.get())
-	implementation(appLibs.lorem.get())
-	testImplementation(appLibs.junit.get())
-	androidTestImplementation(appLibs.junit.get())
-	androidTestImplementation(appLibs.androidTestEspresso.get())
+	implementation(appLibs.core.ktx)
+	implementation(appLibs.appcompat)
+	implementation(appLibs.material)
+	implementation(appLibs.constraintlayout)
+	implementation(appLibs.fragment.ktx)
+	implementation(appLibs.lorem)
+	testImplementation(appLibs.junit)
+	androidTestImplementation(appLibs.junit)
+	androidTestImplementation(appLibs.androidTestEspresso)
 
 	// Image
-	implementation(appLibs.picasso.get())
-	implementation(appLibs.picassoTransformations.get())
-	implementation(appLibs.coil.get())
-	implementation(appLibs.coilSvg.get())
+	implementation(appLibs.picasso)
+	implementation(appLibs.picassoTransformations)
+	implementation(appLibs.coil)
+	implementation(appLibs.coilSvg)
 
 	// Compose
-	implementation(appLibs.composeBom.get())
-	androidTestImplementation(appLibs.composeBom.get())
+	implementation(appLibs.composeBom)
+	androidTestImplementation(appLibs.composeBom)
 	// Material design
-	implementation(appLibs.material3.get())
-	implementation(appLibs.lifecycleRuntimeCompose.get())
+	implementation(appLibs.material3)
+	implementation(appLibs.lifecycleRuntimeCompose)
 
 	// Android Studio Preview support
-	implementation(appLibs.activityCompose.get())
-	implementation(appLibs.uiToolingPreview.get())
-	debugImplementation(appLibs.uiTooling.get())
-	implementation(appLibs.coilCompose.get())
+	implementation(appLibs.activityCompose)
+	implementation(appLibs.uiToolingPreview)
+	debugImplementation(appLibs.uiTooling)
+	implementation(appLibs.coilCompose)
 
 	//lottie
-	implementation(appLibs.lottie.get())
-	implementation(appLibs.lottieCompose.get())
+	implementation(appLibs.lottie)
+	implementation(appLibs.lottieCompose)
 
 	// Voyager
 	// Navigator
-	implementation(appLibs.voyagerNavigator.get())
+	implementation(appLibs.voyagerNavigator)
 
 	// Squircle shape
-	implementation(appLibs.squircleShape.get())
+	implementation(appLibs.squircleShape)
+
+	// Exo player
+	implementation(appLibs.exoplayer)
+	implementation(appLibs.exoplayer.ui)
 
 	// Leak canary
-	debugImplementation(appLibs.leakcanary.get())
+	debugImplementation(appLibs.leakcanary)
+
 }

@@ -10,14 +10,15 @@ androidx-test-ext = "1.1.5"
 androidx-test-espresso = "3.5.1"
 com-squareup-picasso = "2.71828"
 jp-wasabeef-picasso-transformations = "2.4.0"
-coil = "2.4.0"
+coil = "2.5.0"
 coil-svg = "2.2.2"
-androidx-compose-bom = "2023.10.01"
-compose-material = "1.1.2"
-lottie = "6.1.0"
+androidx-compose-bom = "2024.02.01"
+compose-material = "1.2.0"
+lottie = "6.2.0"
 voyager-navigator = "1.0.0"
 squircle = "v1.0.0"
 leakcanary = "2.12"
+exoplayer = "1.3.0-rc01"
 
 [libraries]
 core-ktx = {group = "androidx.core", name = "core-ktx", version.ref = "androidx-core"}
@@ -44,4 +45,6 @@ lottie = {group = "com.airbnb.android", name = "lottie", version.ref = "lottie"}
 lottieCompose = {group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie"}
 voyagerNavigator = {group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager-navigator"}
 squircleShape = {group = "com.github.racra", name = "smooth-corner-rect-android-compose", version.ref = "squircle"}
+exoplayer = {group = "androidx.media3", name = "media3-exoplayer", version.ref = "exoplayer"}
+exoplayer-ui = {group = "androidx.media3", name = "media3-ui", version.ref = "exoplayer"}
 leakcanary = {group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary"}

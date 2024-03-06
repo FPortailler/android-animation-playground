@@ -3,17 +3,18 @@ package me.portailler.florian.testanimation.ui.menu.state
 import me.portailler.florian.testanimation.ui.compose.changeicon.ChangeIconActivity
 import me.portailler.florian.testanimation.ui.compose.designs.DesignHomeActivity
 import me.portailler.florian.testanimation.ui.compose.joystick.JoystickActivity
-import me.portailler.florian.testanimation.ui.xml.lottie.LottieActivity
 import me.portailler.florian.testanimation.ui.compose.lottie.LottieComposeActivity
+import me.portailler.florian.testanimation.ui.compose.shortcuts.ShortcutActivity
+import me.portailler.florian.testanimation.ui.compose.tabbar.TabBarComposeActivity
+import me.portailler.florian.testanimation.ui.compose.tinderCompose.TinderComposeActivity
+import me.portailler.florian.testanimation.ui.compose.video.VideoActivity
+import me.portailler.florian.testanimation.ui.xml.lottie.LottieActivity
 import me.portailler.florian.testanimation.ui.xml.modale.ModalActivity
 import me.portailler.florian.testanimation.ui.xml.program.OptimizedProgramActivity
 import me.portailler.florian.testanimation.ui.xml.program.ProgramActivity
 import me.portailler.florian.testanimation.ui.xml.sharedelement.SharedElementActivity
-import me.portailler.florian.testanimation.ui.compose.shortcuts.ShortcutActivity
 import me.portailler.florian.testanimation.ui.xml.snackbar.SnackbarActivity
-import me.portailler.florian.testanimation.ui.compose.tabbar.TabBarComposeActivity
 import me.portailler.florian.testanimation.ui.xml.tinder.TinderActivity
-import me.portailler.florian.testanimation.ui.compose.tinderCompose.TinderComposeActivity
 
 object MenuDestinationProvider {
 	val items by lazy {
@@ -87,6 +88,11 @@ object MenuDestinationProvider {
 				title = "Change Icon",
 				description = "Change the app icon",
 				activityClass = ChangeIconActivity::class.java
+			),
+			MenuDestination(
+				title = "Video player compose",
+				description = "A video player in compose",
+				activityClass = VideoActivity::class.java
 			)
 		)
 	}

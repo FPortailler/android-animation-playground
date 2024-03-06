@@ -74,6 +74,9 @@
         <activity
             android:name=".ui.compose.designs.DesignHomeActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.compose.video.VideoActivity"
+            android:exported="false" />
 
         <!--   Alias for icons     -->
         <activity-alias
