@@ -97,6 +97,9 @@ dependencies {
 	implementation(appLibs.exoplayer)
 	implementation(appLibs.exoplayer.ui)
 
+	// Confetti
+	implementation(appLibs.confetti)
+
 	// Leak canary
 	debugImplementation(appLibs.leakcanary)
 
