@@ -1,5 +1,6 @@
 package me.portailler.florian.testanimation.ui.compose.designs.state
 
+import me.portailler.florian.testanimation.ui.compose.designs.confetti.ConfettiScreen
 import me.portailler.florian.testanimation.ui.compose.designs.customBrush.SquircleScreen
 import me.portailler.florian.testanimation.ui.compose.designs.quarter.QuarterScreen
 
@@ -17,6 +18,11 @@ object DesignNavProvider {
 				description = "An example of a squircle",
 				screen = SquircleScreen()
 			),
+			DesignNavState(
+				title = "Confetti",
+				description = "A confetti animation",
+				screen = ConfettiScreen()
+			)
 		)
 	}
 }

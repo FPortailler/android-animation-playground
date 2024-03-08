@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## unreleased
+- feat(Confetti): added confetti animation
 - feat(Compose): added `VideoActivity`
 - refacto(packages): split xml and compose packages
 - feat(gradle): migration to Kotlin DSL and version Catalog
