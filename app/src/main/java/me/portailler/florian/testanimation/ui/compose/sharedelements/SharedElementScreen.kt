@@ -1,15 +1,15 @@
 package me.portailler.florian.testanimation.ui.compose.sharedelements
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,25 +37,20 @@ class SharedElementScreen : Screen {
 	override fun Content() {
 		SharedElementsRoot {
 			val scope = LocalSharedElementsRootScope.current!!
-			Crossfade(
-				targetState = scope.selectedIndex,
-				animationSpec = tween(1_000), label = ""
-			) { index ->
-				when (index) {
-					-1 -> SharedElementScreen(
-						modifier = Modifier.fillMaxSize(),
-						scope = scope,
-						items = items,
-						onItemSelected = { item ->
-							scope.select(items.indexOf(item)) { index -> listOf(items[index].imageUri) }
-						}
-					)
+			when (scope.selectedIndex) {
+				-1 -> SharedElementScreen(
+					modifier = Modifier.fillMaxSize(),
+					scope = scope,
+					items = items,
+					onItemSelected = { item ->
+						scope.select(items.indexOf(item)) { index -> listOf(items[index].imageUri) }
+					}
+				)
 
-					else -> SharedElementDetailsScreen(
-						modifier = Modifier.fillMaxSize(),
-						items = items
-					)
-				}
+				else -> SharedElementDetailsScreen(
+					modifier = Modifier.fillMaxSize(),
+					items = items
+				)
 			}
 		}
 	}
@@ -68,9 +63,15 @@ private fun SharedElementScreen(
 	items: List<SharedItem>,
 	onItemSelected: (SharedItem) -> Unit = {},
 ) {
+	val scrollState = rememberLazyListState()
+
+	LaunchedEffect(key1 = scope) {
+		if (scope.previousSelectedIndex != -1) scrollState.scrollToItem(scope.previousSelectedIndex)
+	}
 	LazyColumn(
 		modifier = modifier.padding(top = 16.dp, bottom = 16.dp),
 		verticalArrangement = Arrangement.spacedBy(12.dp),
+		state = scrollState
 	) {
 		items(items) {
 			SharedCard(
