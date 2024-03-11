@@ -3,6 +3,7 @@ package me.portailler.florian.testanimation.ui.compose.designs.state
 import me.portailler.florian.testanimation.ui.compose.designs.confetti.ConfettiScreen
 import me.portailler.florian.testanimation.ui.compose.designs.customBrush.SquircleScreen
 import me.portailler.florian.testanimation.ui.compose.designs.quarter.QuarterScreen
+import me.portailler.florian.testanimation.ui.compose.sharedelements.SharedElementScreen
 
 object DesignNavProvider {
 
@@ -22,7 +23,12 @@ object DesignNavProvider {
 				title = "Confetti",
 				description = "A confetti animation",
 				screen = ConfettiScreen()
-			)
+			),
+			DesignNavState(
+				title = "Shared Elements",
+				description = "A Shared elements example with a fork of a library",
+				screen = SharedElementScreen()
+			),
 		)
 	}
 }

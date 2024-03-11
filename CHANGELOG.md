@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## unreleased
+- feat(SharedElement): played with shared element transition
 - feat(Confetti): added confetti animation
 - feat(Compose): added `VideoActivity`
 - refacto(packages): split xml and compose packages
