@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## unreleased
+- feat(SharedElements): refactored shared elements for a library
 - feat(SharedElement): played with shared element transition
 - feat(Confetti): added confetti animation
 - feat(Compose): added `VideoActivity`

@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation.ui.compose.sharedelements.lib
+package me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.states
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable

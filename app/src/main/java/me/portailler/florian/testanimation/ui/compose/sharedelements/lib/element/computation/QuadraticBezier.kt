@@ -1,4 +1,4 @@
-package me.portailler.florian.testanimation.ui.compose.sharedelements.lib
+package me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.computation
 
 import androidx.compose.ui.geometry.Offset
 

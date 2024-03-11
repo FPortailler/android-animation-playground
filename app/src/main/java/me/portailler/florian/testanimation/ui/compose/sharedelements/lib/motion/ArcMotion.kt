@@ -1,8 +1,9 @@
-package me.portailler.florian.testanimation.ui.compose.sharedelements.lib
+package me.portailler.florian.testanimation.ui.compose.sharedelements.lib.motion
 
 import androidx.compose.ui.geometry.Offset
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.computation.QuadraticBezier
 
-class MaterialArcMotion : KeyframeBasedMotion() {
+class ArcMotion : KeyframeBasedMotion() {
 
     override fun getKeyframes(start: Offset, end: Offset): Pair<FloatArray, LongArray> =
         QuadraticBezier.approximate(
@@ -14,4 +15,4 @@ class MaterialArcMotion : KeyframeBasedMotion() {
 
 }
 
-val MaterialArcMotionFactory: PathMotionFactory = { MaterialArcMotion() }
+val ArcMotionFactory: PathMotionFactory = { ArcMotion() }

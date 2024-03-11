@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.thedeanda.lorem.LoremIpsum
 import me.portailler.florian.testanimation.R
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.LocalSharedElementsRootScope
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedElementsRoot
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedElementsRootScope
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.select
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.LocalSharedElementsRootScope
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.SharedElementsRoot
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.SharedElementsRootScope
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.select
 
 class SharedElementScreen : Screen {
 

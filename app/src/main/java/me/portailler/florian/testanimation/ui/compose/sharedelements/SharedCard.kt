@@ -32,10 +32,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import me.portailler.florian.testanimation.R
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.FadeMode
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.MaterialArcMotionFactory
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.MaterialContainerTransformSpec
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedMaterialContainer
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedElement
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.container.fadeIn
 
 @Composable
 fun SharedCard(
@@ -57,10 +55,10 @@ fun SharedCard(
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.spacedBy(16.dp),
 	) {
-		SharedMaterialContainer(
+		SharedElement(
 			key = title,
 			screenKey = "list",
-			transitionSpec = MaterialFadeInTransitionSpec,
+			transitionSpec = fadeIn(1_000),
 			onFractionChanged = {
 				aspectRatio = 1f * (1 - it) + 16f.div(9f) * it
 			}
@@ -130,10 +128,4 @@ private fun SharedItemPreview() {
 		)
 	}
 }
-
-private val MaterialFadeInTransitionSpec = MaterialContainerTransformSpec(
-	pathMotionFactory = MaterialArcMotionFactory,
-	durationMillis = 1_000,
-	fadeMode = FadeMode.In
-)
 

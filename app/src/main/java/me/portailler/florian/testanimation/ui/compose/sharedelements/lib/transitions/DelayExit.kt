@@ -1,10 +1,11 @@
-package me.portailler.florian.testanimation.ui.compose.sharedelements.lib
+package me.portailler.florian.testanimation.ui.compose.sharedelements.lib.transitions
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.SharedElementsRootScope
 
 
 /**

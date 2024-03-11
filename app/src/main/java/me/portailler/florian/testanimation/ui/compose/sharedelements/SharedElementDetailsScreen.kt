@@ -23,12 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.FadeMode
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.LocalSharedElementsRootScope
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.MaterialArcMotionFactory
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.MaterialContainerTransformSpec
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedMaterialContainer
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.select
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedElement
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.container.ContainerTransformSpec
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.motion.ArcMotionFactory
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.LocalSharedElementsRootScope
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.select
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.transitions.FadeMode
 
 
 @Composable
@@ -44,7 +44,7 @@ fun SharedElementDetailsScreen(
 		color = MaterialTheme.colorScheme.background.copy(alpha = 0.32f * fraction),
 	) {
 		Column {
-			SharedMaterialContainer(
+			SharedElement(
 				key = item.title,
 				screenKey = "details",
 				isFullscreen = true,
@@ -87,8 +87,8 @@ fun SharedElementDetailsScreen(
 }
 
 
-private val MaterialFadeOutTransitionSpec = MaterialContainerTransformSpec(
-	pathMotionFactory = MaterialArcMotionFactory,
+private val MaterialFadeOutTransitionSpec = ContainerTransformSpec(
+	pathMotionFactory = ArcMotionFactory,
 	durationMillis = 1_000,
 	fadeMode = FadeMode.Out
 )
