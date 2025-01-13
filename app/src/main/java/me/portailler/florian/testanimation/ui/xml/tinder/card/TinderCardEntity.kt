@@ -1,7 +1,11 @@
 package me.portailler.florian.testanimation.ui.xml.tinder.card
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
+@Stable
+@Immutable
 data class TinderCardEntity(
 	val id: String,
 	val title: String,

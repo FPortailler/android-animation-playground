@@ -8,9 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import me.portailler.florian.testanimation.ui.xml.tinder.TinderViewModel
 import me.portailler.florian.testanimation.ui.compose.tinderCompose.box.DragAndSwipeBox
 import me.portailler.florian.testanimation.ui.compose.tinderCompose.card.TinderCard
+import me.portailler.florian.testanimation.ui.xml.tinder.TinderViewModel
 
 @Composable
 fun TinderScreen(

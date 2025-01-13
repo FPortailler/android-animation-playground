@@ -1,5 +1,7 @@
 package me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 
 interface SharedElementsRootScope {
@@ -21,5 +23,7 @@ fun SharedElementsRootScope.select(index: Int, provideElements: (index: Int) -> 
 	}
 }
 
-val LocalSharedElementsRootScope = staticCompositionLocalOf<SharedElementsRootScope?> { null }
+val LocalSharedElementsRootScope: ProvidableCompositionLocal<SharedElementsRootScope?> = staticCompositionLocalOf<SharedElementsRootScope?> { null }
+@Composable
+fun ProvidableCompositionLocal<SharedElementsRootScope?>.getOrThrow() = this.current ?: error("No SharedElementsRootScope provided")
 

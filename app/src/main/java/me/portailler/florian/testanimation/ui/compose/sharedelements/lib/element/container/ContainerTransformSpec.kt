@@ -71,8 +71,14 @@ class ContainerTransformSpec(
 	}
 }
 
-public fun fadeIn(durationMillis: Int = AnimationConstants.DefaultDurationMillis) = ContainerTransformSpec(
+public fun fadeIn(durationMillis: Int = AnimationConstants.DefaultDurationMillis): ContainerTransformSpec = ContainerTransformSpec(
 	durationMillis = durationMillis,
 	fadeMode = FadeMode.In,
 	pathMotionFactory = ArcMotionFactory,
+)
+
+public fun fadeOut(durationMillis: Int = AnimationConstants.DefaultDurationMillis): ContainerTransformSpec = ContainerTransformSpec(
+	pathMotionFactory = ArcMotionFactory,
+	durationMillis = durationMillis,
+	fadeMode = FadeMode.Out
 )

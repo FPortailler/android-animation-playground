@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
@@ -35,14 +36,14 @@ const val DIRECTION_NONE = 0
 fun DragAndSwipeBox(
 	modifier: Modifier = Modifier,
 	itemCount: Int,
-	tiltEmphasis: Float = 5f,
-	swipeThreshold: Float = 0.2f,
-	resetAnimationDuration: Int = 300,
+	tiltEmphasis: () -> Float = { 5f },
+	swipeThreshold: () -> Float = { 0.2f },
+	resetAnimationDuration: () -> Int = { 300 },
 	build: @Composable (Modifier, index: Int) -> Unit,
 	onSwipe: (direction: Int, index: Int) -> Unit,
 	onDrag: (index: Int, progress: Float) -> Unit,
 ) {
-	var currentIndex by rememberSaveable { mutableStateOf(0) }
+	var currentIndex by rememberSaveable { mutableIntStateOf(0) }
 	val animatableX = remember { Animatable(0f) }
 	val animatableY = remember { Animatable(0f) }
 	val animatableRotationAngle = remember { Animatable(0f) }
@@ -86,7 +87,7 @@ fun DragAndSwipeBox(
 					)
 				}
 				if (animationState is AnimationState.SwipeOut) launch {
-					delay(resetAnimationDuration.toLong())
+					delay(resetAnimationDuration().toLong())
 					currentIndex++
 					animationState = AnimationState.Reset(duration = 0)
 				}
@@ -133,9 +134,9 @@ fun DragAndSwipeBox(
 private fun Modifier.detectDragAndSwipeGesture(
 	enabled: Boolean,
 	state: DragAndSwipeState,
-	tiltEmphasis: Float = 5f,
-	swipeThreshold: Float = 0.2f,
-	resetAnimationDuration: Int = 300,
+	tiltEmphasis: () -> Float = { 5f },
+	swipeThreshold: () -> Float = { 0.2f },
+	resetAnimationDuration: () -> Int = { 300 },
 	onStateUpdate: (DragAndSwipeState) -> Unit,
 	onSwipe: (direction: Int) -> Unit,
 	onDrag: (progress: Float) -> Unit,
@@ -155,7 +156,7 @@ private fun Modifier.detectDragAndSwipeGesture(
 				startPoint = Offset.Zero
 				onStateUpdate(
 					state.copy(
-						animationState = AnimationState.Reset(duration = resetAnimationDuration)
+						animationState = AnimationState.Reset(duration = resetAnimationDuration())
 					)
 				)
 			},
@@ -163,19 +164,19 @@ private fun Modifier.detectDragAndSwipeGesture(
 
 				val endPoint = (startPoint + currentPoint)
 				val direction = when {
-					endPoint.x <= swipeThreshold * size.width -> DIRECTION_LEFT
-					endPoint.x >= (1 - swipeThreshold) * size.width -> DIRECTION_RIGHT
+					endPoint.x <= swipeThreshold() * size.width -> DIRECTION_LEFT
+					endPoint.x >= (1 - swipeThreshold()) * size.width -> DIRECTION_RIGHT
 					else -> DIRECTION_NONE
 				}
 				val dx = direction * size.width.toFloat() * 2
 				onStateUpdate(
 					state.copy(
-						animationState = if (direction == DIRECTION_NONE) AnimationState.Reset(duration = resetAnimationDuration)
+						animationState = if (direction == DIRECTION_NONE) AnimationState.Reset(duration = resetAnimationDuration())
 						else AnimationState.SwipeOut(
 							x = dx,
 							y = startPoint.targetY(endPoint, dx),
 							angle = rotationAngle,
-							duration = resetAnimationDuration
+							duration = resetAnimationDuration()
 						),
 					)
 				)
@@ -184,7 +185,7 @@ private fun Modifier.detectDragAndSwipeGesture(
 		) { change, dragAmount ->
 			change.consume()
 			currentPoint += dragAmount
-			rotationAngle = currentPoint.x.div(max(1f, startPoint.x)) * tiltEmphasis
+			rotationAngle = currentPoint.x.div(max(1f, startPoint.x)) * tiltEmphasis()
 			onStateUpdate(
 				state.copy(
 					animationState = AnimationState.Dragging(

@@ -24,11 +24,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.SharedElement
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.container.ContainerTransformSpec
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.motion.ArcMotionFactory
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.element.container.fadeOut
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.LocalSharedElementsRootScope
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.getOrThrow
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.select
-import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.transitions.FadeMode
 
 
 @Composable
@@ -36,7 +35,7 @@ fun SharedElementDetailsScreen(
 	items: List<SharedItem>,
 	modifier: Modifier = Modifier,
 ) {
-	val item = items.getOrNull(LocalSharedElementsRootScope.current!!.selectedIndex)
+	val item = items.getOrNull(LocalSharedElementsRootScope.getOrThrow().selectedIndex)
 	val (fraction, setFraction) = remember { mutableFloatStateOf(1f) }
 	if (item != null) Surface(
 		modifier = modifier
@@ -48,7 +47,7 @@ fun SharedElementDetailsScreen(
 				key = item.title,
 				screenKey = "details",
 				isFullscreen = true,
-				transitionSpec = MaterialFadeOutTransitionSpec,
+				transitionSpec = fadeOut(),
 				onFractionChanged = setFraction,
 			) {
 				val scope = LocalSharedElementsRootScope.current!!
@@ -85,10 +84,3 @@ fun SharedElementDetailsScreen(
 		}
 	}
 }
-
-
-private val MaterialFadeOutTransitionSpec = ContainerTransformSpec(
-	pathMotionFactory = ArcMotionFactory,
-	durationMillis = 1_000,
-	fadeMode = FadeMode.Out
-)

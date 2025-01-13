@@ -58,7 +58,7 @@ fun SharedCard(
 		SharedElement(
 			key = title,
 			screenKey = "list",
-			transitionSpec = fadeIn(1_000),
+			transitionSpec = fadeIn(),
 			onFractionChanged = {
 				aspectRatio = 1f * (1 - it) + 16f.div(9f) * it
 			}

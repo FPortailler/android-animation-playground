@@ -19,6 +19,7 @@ import me.portailler.florian.testanimation.R
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.LocalSharedElementsRootScope
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.SharedElementsRoot
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.SharedElementsRootScope
+import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.getOrThrow
 import me.portailler.florian.testanimation.ui.compose.sharedelements.lib.root.select
 
 class SharedElementScreen : Screen {
@@ -36,7 +37,7 @@ class SharedElementScreen : Screen {
 	@Composable
 	override fun Content() {
 		SharedElementsRoot {
-			val scope = LocalSharedElementsRootScope.current!!
+			val scope = LocalSharedElementsRootScope.getOrThrow()
 			when (scope.selectedIndex) {
 				-1 -> SharedElementScreen(
 					modifier = Modifier.fillMaxSize(),
